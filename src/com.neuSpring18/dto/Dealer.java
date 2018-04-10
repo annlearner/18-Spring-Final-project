@@ -1,4 +1,4 @@
-package com.neuSep17.dto;
+package com.neuSpring18.dto;
 
 public class Dealer {
     private String id;
