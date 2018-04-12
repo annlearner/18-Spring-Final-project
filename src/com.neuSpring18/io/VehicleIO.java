@@ -1,7 +1,9 @@
 package com.neuSpring18.io;
 
+import java.util.List;
+
 public class VehicleIO {
-    public static String[] getVehiclesFromDealer(String dealerID) {
+    public static List<String> getVehiclesFromDealer(String dealerID) {
         return null;
     }
     public static String addVehicleToDealer(String dealerID, String vehicleString) {
