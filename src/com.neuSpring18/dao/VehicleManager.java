@@ -37,7 +37,7 @@ public class VehicleManager implements IVehicleManager{
         return false;
     }
 
-    public void setDealer(Dealer dealer) {
-        this.dealer = dealer;
+    public void setDealer(String dealerID) {
+        this.dealerID = dealerID;
     }
 }
