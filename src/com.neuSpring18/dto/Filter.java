@@ -7,7 +7,7 @@ public class Filter {
     private float minPrice;
     private float maxPrice;
     private int year;
-    private int brand;
+    private String brand;
 
     public float getMinPrice() {
         return minPrice;
@@ -33,11 +33,11 @@ public class Filter {
         this.year = year;
     }
 
-    public int getBrand() {
+    public String getBrand() {
         return brand;
     }
 
-    public void setBrand(int brand) {
+    public void setBrand(String brand) {
         this.brand = brand;
     }
 }
