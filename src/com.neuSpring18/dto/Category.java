@@ -15,4 +15,16 @@ public enum Category {
         }
     }
 
+    @Override
+    public String toString() {
+        switch (this) {
+            case NEW:
+                return "new";
+            case USED:
+                return "used";
+            case CERTIFIED:
+                return "certified";
+        }
+        return super.toString();
+    }
 }

@@ -3,6 +3,7 @@ package com.neuSpring18.dao;
 import com.neuSpring18.dto.Dealer;
 import com.neuSpring18.dto.Filter;
 import com.neuSpring18.dto.Vehicle;
+import com.neuSpring18.io.VehicleIO;
 
 import java.util.Collection;
 
@@ -24,17 +25,17 @@ public class VehicleManager implements IVehicleManager{
 
     @Override
     public String addVehicle(Vehicle v) {
-        return null;
+        return VehicleIO.addVehicleToDealer(dealerID, v.toString());
     }
 
     @Override
     public boolean editVehicle(Vehicle v) {
-        return false;
+        return VehicleIO.editVehicleOfDealer(dealerID, v.toString());
     }
 
     @Override
     public boolean deleteVehicle(String vehicleID) {
-        return false;
+        return VehicleIO.deleteVehicleFromDealer(dealerID, vehicleID);
     }
 
     public void setDealer(String dealerID) {

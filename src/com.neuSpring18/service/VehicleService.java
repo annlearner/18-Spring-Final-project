@@ -1,5 +1,6 @@
 package com.neuSpring18.service;
 
+import com.neuSpring18.dao.VehicleManager;
 import com.neuSpring18.dto.Filter;
 import com.neuSpring18.dto.Paging;
 import com.neuSpring18.dto.Sorting;
@@ -21,16 +22,19 @@ public class VehicleService implements IVehicleService {
 
     @Override
     public String addVehicle(String dealerID, Vehicle v) {
-        return null;
+        VehicleManager vm = new VehicleManager(dealerID);
+        return vm.addVehicle(v);
     }
 
     @Override
     public boolean editVehicle(String dealerID, Vehicle v) {
-        return false;
+        VehicleManager vm = new VehicleManager(dealerID);
+        return vm.editVehicle(v);
     }
 
     @Override
     public boolean removeVehicle(String dealerID, String vehicleID) {
-        return false;
+        VehicleManager vm = new VehicleManager(dealerID);
+        return vm.deleteVehicle(vehicleID);
     }
 }
