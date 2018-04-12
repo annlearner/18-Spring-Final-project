@@ -7,9 +7,9 @@ import com.neuSpring18.dto.Vehicle;
 import java.util.Collection;
 
 public class VehicleManager implements IVehicleManager{
-    private Dealer dealer;
-    public VehicleManager(Dealer dealer) {
-        this.dealer = dealer;
+    private String dealerID;
+    public VehicleManager(String dealerID) {
+        this.dealerID = dealerID;
     }
 
     @Override
