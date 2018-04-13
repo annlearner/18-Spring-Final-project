@@ -16,7 +16,7 @@ public class VehicleService implements IVehicleService {
 
     private VehicleManager vm;
     Collection<Vehicle> temp;
-    Collection<Vehicle> res;
+    Collection<Vehicle> afterSortAndPaging = new ArrayList<Vehicle>();
     @Override
     public Collection<Vehicle> getVehiclesByFilter(String dealerID, Filter filter, Sorting sorting, Paging paging) {
         vm = new VehicleManager(dealerID);
@@ -56,7 +56,6 @@ public class VehicleService implements IVehicleService {
             });
         }
 
-        temp = new ArrayList<>(list);
         int start = paging.getPageNum() * paging.getPerPage() - paging.getPerPage();
         int end;
         if (paging.getPageNum() * paging.getPerPage() > list.size()) {
@@ -64,9 +63,9 @@ public class VehicleService implements IVehicleService {
         } else
             end = paging.getPageNum() * paging.getPerPage();
         for (int i = start; i < end; i++) {
-            res.add(list.get(i));
+            afterSortAndPaging.add(list.get(i));
         }
-        return res;
+        return afterSortAndPaging;
 
     }
 
