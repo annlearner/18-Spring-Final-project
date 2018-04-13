@@ -123,7 +123,7 @@ public class VehicleManager implements IVehicleManager{
 
     @Override
     public boolean editVehicle(Vehicle v) {
-        return VehicleIO.editVehicleOfDealer(dealerID, v.toString());
+        return VehicleIO.editVehicleOfDealer(dealerID, v.getId(), v.toString());
     }
 
     @Override
