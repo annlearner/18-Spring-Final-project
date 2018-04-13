@@ -6,14 +6,16 @@ public class Filter {
 
     private double minPrice;
     private double maxPrice;
-    private int year;
-    private String brand;
+    private int minYear;
+    private int maxYear;
+    private String make;
+    private Category category;
 
     public double getMinPrice() {
         return minPrice;
     }
 
-    public void setMinPrice(int minPrice) {
+    public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
     }
 
@@ -21,23 +23,39 @@ public class Filter {
         return maxPrice;
     }
 
-    public void setMaxPrice(int maxPrice) {
+    public void setMaxPrice(double maxPrice) {
         this.maxPrice = maxPrice;
     }
 
-    public int getYear() {
-        return year;
+    public int getMinYear() {
+        return minYear;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setMinYear(int minYear) {
+        this.minYear = minYear;
     }
 
-    public String getBrand() {
-        return brand;
+    public int getMaxYear() {
+        return maxYear;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setMaxYear(int maxYear) {
+        this.maxYear = maxYear;
+    }
+
+    public String getMake() {
+        return make;
+    }
+
+    public void setMake(String make) {
+        this.make = make;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
