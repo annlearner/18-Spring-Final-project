@@ -1,4 +1,4 @@
-package Lesson3;
+
 import java.awt.*;
 
 import javax.security.auth.callback.ConfirmationCallback;
