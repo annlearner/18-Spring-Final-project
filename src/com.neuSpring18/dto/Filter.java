@@ -4,42 +4,42 @@ package com.neuSpring18.dto;
 // Just a rough draft. Feel free to modify or add on it depends on demand.
 public class Filter {
 
-    private double minPrice;
-    private double maxPrice;
-    private int minYear;
-    private int maxYear;
+    private String minPrice;
+    private String maxPrice;
+    private String minYear;
+    private String maxYear;
     private String make;
-    private Category category;
+    private String category;
 
-    public double getMinPrice() {
+    public String getMinPrice() {
         return minPrice;
     }
 
-    public void setMinPrice(double minPrice) {
+    public void setMinPrice(String minPrice) {
         this.minPrice = minPrice;
     }
 
-    public double getMaxPrice() {
+    public String getMaxPrice() {
         return maxPrice;
     }
 
-    public void setMaxPrice(double maxPrice) {
+    public void setMaxPrice(String maxPrice) {
         this.maxPrice = maxPrice;
     }
 
-    public int getMinYear() {
+    public String getMinYear() {
         return minYear;
     }
 
-    public void setMinYear(int minYear) {
+    public void setMinYear(String minYear) {
         this.minYear = minYear;
     }
 
-    public int getMaxYear() {
+    public String getMaxYear() {
         return maxYear;
     }
 
-    public void setMaxYear(int maxYear) {
+    public void setMaxYear(String maxYear) {
         this.maxYear = maxYear;
     }
 
@@ -51,11 +51,11 @@ public class Filter {
         this.make = make;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 }
