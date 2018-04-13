@@ -4,12 +4,12 @@ package com.neuSpring18.dto;
 // Just a rough draft. Feel free to modify or add on it depends on demand.
 public class Filter {
 
-    private float minPrice;
-    private float maxPrice;
+    private double minPrice;
+    private double maxPrice;
     private int year;
     private String brand;
 
-    public float getMinPrice() {
+    public double getMinPrice() {
         return minPrice;
     }
 
@@ -17,7 +17,7 @@ public class Filter {
         this.minPrice = minPrice;
     }
 
-    public float getMaxPrice() {
+    public double getMaxPrice() {
         return maxPrice;
     }
 
