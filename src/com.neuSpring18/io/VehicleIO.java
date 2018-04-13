@@ -12,8 +12,8 @@ public class VehicleIO {
      * @param dealerID selected dealer
      * @return all vehicles' infomation
      */
-    public static String getVehiclesFromDealer(String dealerID) {
-        String vehicles = "";
+    public static List<String> getVehiclesFromDealer(String dealerID) {
+        List<String> vehicles = new ArrayList<>();
         String file = pathway+ dealerID;
         BufferedReader br = null;
         try {
@@ -22,7 +22,7 @@ public class VehicleIO {
             br = new BufferedReader(fr);
             String line ;
             while ((line = br.readLine()) != null) {
-                vehicles += line;
+                vehicles.add(line);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,10 +63,12 @@ public class VehicleIO {
         if (fw != null) {
             bw=new BufferedWriter(fw);
         }
-        try (PrintWriter pw = new PrintWriter(bw)) {
-            pw.println(vehicleString);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (bw != null) {
+            try (PrintWriter pw = new PrintWriter(bw)) {
+                pw.println(vehicleString);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return newID;
     }
