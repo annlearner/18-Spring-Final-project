@@ -133,4 +133,18 @@ public class Vehicle {
         sb.append(photoUrl);
         return sb.toString();
     }
+
+    public String toSearchString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(id).append("~");
+        sb.append(webId).append("~");
+        sb.append(category).append("~");
+        sb.append(year).append("~");
+        sb.append(make).append("~");
+        sb.append(model).append("~");
+        sb.append(trim).append("~");
+        sb.append(bodyType).append("~");
+        sb.append(price);
+        return sb.toString();
+    }
 }

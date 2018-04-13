@@ -1,6 +1,5 @@
 package com.neuSpring18.dao;
 
-import com.neuSpring18.dto.Category;
 import com.neuSpring18.dto.Filter;
 import com.neuSpring18.dto.Vehicle;
 import com.neuSpring18.io.VehicleIO;
@@ -25,6 +24,7 @@ public class VehicleManager implements IVehicleManager{
         String maxYear = filter.getMaxYear();
         String make = filter.getMake();
         String category = filter.getCategory();
+        String search = filter.getSearch();
 
         List<String> vehiclesFromDealer = VehicleIO.getVehiclesFromDealer(dealerID);
         Collection<Vehicle> filteredVehicles = new ArrayList<Vehicle>();
@@ -34,7 +34,8 @@ public class VehicleManager implements IVehicleManager{
             Vehicle vehicle = new Vehicle(v);
             if (minPriceFilter(vehicle, minPrice) && maxPriceFilter(vehicle, maxPrice)
                     && minYearFilter(vehicle, minYear) && maxYearFilter(vehicle, maxYear)
-                    && makeFilter(vehicle, make) && categoryFilter(vehicle, category)) {
+                    && makeFilter(vehicle, make) && categoryFilter(vehicle, category)
+                    && searchFilter(vehicle, search)) {
                 filteredVehicles.add(vehicle);
             }
         }
@@ -104,6 +105,23 @@ public class VehicleManager implements IVehicleManager{
         if (category == null || category.equals(""))
             return true;
         return vehicle.getCategory().toString().contains(category);
+    }
+
+    private boolean searchFilter(Vehicle vehicle, String search) {
+
+        if (search == null || search.equals(""))
+            return true;
+
+        search = search.toLowerCase();
+        String vehicleString = vehicle.toSearchString().toLowerCase();
+        String[] arr = search.split(" +");
+
+        for (String s : arr) {
+            if (!vehicleString.contains(s))
+                return false;
+        }
+
+        return true;
     }
 
     @Override
