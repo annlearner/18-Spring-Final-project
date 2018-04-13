@@ -6,7 +6,11 @@ import com.neuSpring18.dto.Paging;
 import com.neuSpring18.dto.Sorting;
 import com.neuSpring18.dto.Vehicle;
 
-import java.util.Collection;
+import java.util.*;
+
+import static com.neuSpring18.dto.Sorting.ASCEND_PRICE;
+import static com.neuSpring18.dto.Sorting.ASCEND_YEAR;
+import static com.neuSpring18.dto.Sorting.DESCEND_PRICE;
 
 public class VehicleService implements IVehicleService {
 
