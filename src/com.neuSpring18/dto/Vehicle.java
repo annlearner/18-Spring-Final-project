@@ -13,7 +13,7 @@ public class Vehicle {
     private String model;
     private String trim;
     private String bodyType;
-    private float price;
+    private double price;
     private URL photoUrl;
 
     public Vehicle(String s) {
@@ -27,7 +27,7 @@ public class Vehicle {
             this.model = ss[5];
             this.trim = ss[6];
             this.bodyType = ss[7];
-            this.price = Float.parseFloat(ss[8]);
+            this.price = Double.parseDouble(ss[8]);
             try {
                 this.photoUrl = new URL(ss[9]);
             } catch (MalformedURLException e) {
@@ -102,11 +102,11 @@ public class Vehicle {
         this.bodyType = bodyType;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
