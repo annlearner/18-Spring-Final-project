@@ -3,6 +3,11 @@
 VehicleService provides get/add/edit/delete functions of Vehicles for both Dealer and Customer
 
 ```
+Collection<Vehicle> getVehiclesByFilter(String dealerID, Filter filter, Sorting sorting, Paging paging);
+// Return the Vehicles from one dealer after filter, sorting and paging
+```
+
+```
 String addVehicle(String dealerID, Vehicle v);
 // Return the ID of the new vehicle
 // Notice that here the input vehicle could not contain id attribute
