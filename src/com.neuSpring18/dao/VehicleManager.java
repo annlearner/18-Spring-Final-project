@@ -27,6 +27,7 @@ public class VehicleManager implements IVehicleManager{
         String search = filter.getSearch();
 
         List<String> vehiclesFromDealer = VehicleIO.getVehiclesFromDealer(dealerID);
+        vehiclesFromDealer.remove(0);
         Collection<Vehicle> filteredVehicles = new ArrayList<Vehicle>();
 
         for (String v : vehiclesFromDealer) {
@@ -127,6 +128,7 @@ public class VehicleManager implements IVehicleManager{
     @Override
     public Collection<Vehicle> getVehicleFromDealer() {
         List<String> vehiclesFromDealer = VehicleIO.getVehiclesFromDealer(dealerID);
+        vehiclesFromDealer.remove(0);
         Collection<Vehicle> vehicles = new ArrayList<Vehicle>();
         for (String v : vehiclesFromDealer) {
             vehicles.add(new Vehicle(v));
