@@ -8,7 +8,7 @@ public class UserIO implements UserIOInterface {
     private String path=System.getProperty("user.dir")+"\\data\\";
 
     @Override
-    public List<String> findAllBasedOnMode(String mode, String filename) {
+    public List<String> getAllBasedOnMode(String mode, String filename) {
         String file=path+filename;
         List<String> result = new ArrayList<>();
         BufferedReader br=null;
@@ -79,7 +79,7 @@ public class UserIO implements UserIOInterface {
     }
 
     private boolean hasId(String filename,String ID) {
-        List<String> result=findAllBasedOnMode("ID",filename);
+        List<String> result=getAllBasedOnMode("ID",filename);
         return result.contains(ID);
     }
 
@@ -93,7 +93,7 @@ public class UserIO implements UserIOInterface {
             FileReader fr=new FileReader(f);
             BufferedReader br=new BufferedReader(fr);
             while((line=br.readLine())!=null) {
-                if (findAllBasedOnMode("ID",dealerID).size() == 0) {
+                if (getAllBasedOnMode("ID",dealerID).size() == 0) {
                     return false;
                 }
                 if (line.contains(vehicleID)) {
