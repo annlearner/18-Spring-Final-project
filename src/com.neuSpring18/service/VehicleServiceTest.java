@@ -5,11 +5,11 @@ import com.neuSpring18.dto.Paging;
 import com.neuSpring18.dto.Sorting;
 import com.neuSpring18.dto.Vehicle;
 
-public class TestVehicleService {
+public class VehicleServiceTest {
     public static void main(String[] args) {
 
 
-        IVehicleService vs = new VehicleService();
+        VehicleService vs = new VehicleServiceImple();
         for (Vehicle vehicle : vs.getVehiclesByDealer("gmps-curry")) {
             System.out.println(vehicle);
         }

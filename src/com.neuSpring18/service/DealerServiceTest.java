@@ -1,8 +1,8 @@
 package com.neuSpring18.service;
 
-public class TestDealerService {
+public class DealerServiceTest {
     public static void main(String[] args) {
-        IDealerService ds = new DealerService();
+        DealerService ds = new DealerServiceImple();
         System.out.println(ds.getAllDealers());
     }
 }
