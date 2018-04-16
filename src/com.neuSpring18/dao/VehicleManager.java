@@ -8,10 +8,10 @@ import com.neuSpring18.dto.Vehicle;
 import java.util.Collection;
 
 public interface VehicleManager {
-    Collection<Vehicle> getVehicleFromDealer(Filter filter); // We do not do any sort or paging in this layer, just simply return all valid results.
-    Collection<Vehicle> getVehicleFromDealer();
+    Collection<Vehicle> getVehicleFromDealer(String dealerID, Filter filter); // We do not do any sort or paging in this layer, just simply return all valid results.
+    Collection<Vehicle> getVehicleFromDealer(String dealerID);
     InventoryContext getContext(String dealerID);
-    String addVehicle(Vehicle v);
-    boolean editVehicle(Vehicle v);
-    boolean deleteVehicle(String vehicleID);
+    String addVehicle(String dealerID, Vehicle v);
+    boolean editVehicle(String dealerID, Vehicle v);
+    boolean deleteVehicle(String dealerID, String vehicleID);
 }

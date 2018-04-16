@@ -10,11 +10,6 @@ import java.util.List;
 
 public class VehicleManagerImple implements VehicleManager {
 
-    private String dealerID;
-    public VehicleManagerImple(String dealerID) {
-        this.dealerID = dealerID;
-    }
-
     @Override
     public Collection<Vehicle> getVehicleFromDealer(Filter filter) {
 
