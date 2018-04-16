@@ -4,29 +4,31 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleIO {
+public class UserIO implements UserIOInterface {
+    private String path=System.getProperty("user.dir")+"\\data\\";
 
-    private static String pathway="C:\\Users\\YueTa\\IdeaProjects\\18-Spring-Final-project\\data\\";
-    /**
-     * return all vehicles from selected Dealer
-     * @param dealerID selected dealer
-     * @return all vehicles' infomation
-     */
-    public static List<String> getVehiclesFromDealer(String dealerID) {
-        List<String> vehicles = new ArrayList<>();
-        String file = pathway+ dealerID;
-        BufferedReader br = null;
+    @Override
+    public List<String> findAllBasedOnMode(String mode, String filename) {
+        String file=path+filename;
+        List<String> result = new ArrayList<>();
+        BufferedReader br=null;
         try {
-            File f = new File(file);
-            FileReader fr = new FileReader(f);
-            br = new BufferedReader(fr);
-            String line ;
-            while ((line = br.readLine()) != null) {
-                vehicles.add(line);
+            br = new BufferedReader(new FileReader(file));
+            String read;
+            while ((read = br.readLine()) != null) {
+                if (mode.equals("ID")) {
+                    String[] splited = read.split("\t");
+                    if (splited.length > 0) {
+                        result.add(splited[0]);
+                    }
+                } else if (mode.equals("All")) {
+                    result.add(read);
+                }
             }
-        } catch (Exception e) {
+        }catch(Exception e){
+            System.out.println("There was a problem: "+e);
             e.printStackTrace();
-        } finally {
+        }finally {
             try {
                 if (br != null) {
                     br.close();
@@ -35,18 +37,12 @@ public class VehicleIO {
                 e.printStackTrace();
             }
         }
-        return vehicles;
+        return result;
     }
 
-    /**
-     * add the infomation of vehicle to its dealer's file
-     * and generate an id for this new vehicle then return the ID
-     * @param dealerID to select the dealer file
-     * @param vehicleString the infomation about the new vehicle
-     * @return the ID auto-generated
-     */
-    public static String addVehicleToDealer(String dealerID, String vehicleString) {
-        String selected=pathway+dealerID;
+    @Override
+    public String addVehicleToDealer(String dealerID, String vehicleString) {
+        String selected=path+dealerID;
         String newID=null;
         //hasID no? then generate Id
         while(hasId(selected,newID)) {
@@ -77,44 +73,19 @@ public class VehicleIO {
      * Generate a 10 digit ID randomly
      * @return the ID
      */
-    private static String generateId() {
+    private String generateId() {
         long number=(long)Math.floor(Math.random()*9_000_000_000L)+1_000_000_000L;
         return Long.toString(number);
     }
 
-    private static boolean hasId(String filename,String ID) {
-        List<String> result=getallVehicleID(filename);
+    private boolean hasId(String filename,String ID) {
+        List<String> result=findAllBasedOnMode("ID",filename);
         return result.contains(ID);
     }
 
-    private static List<String> getallVehicleID(String filename){
-        List<String> result= new ArrayList<>();
-        BufferedReader br=null;
-        try {
-            br=new BufferedReader(new FileReader(filename));
-            String read;
-            while((read=br.readLine())!=null) {
-                String[] splited = read.split("\t");
-                if (splited.length > 0) {
-                    result.add(splited[0]);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException e) {
-                System.out.println("Process close has problems.");
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-    public static boolean editVehicleOfDealer(String dealerID,String vehicleID, String vehicleString) {
-        String filepath=pathway+dealerID;
+    @Override
+    public boolean editVehicleofDealer(String dealerID, String vehicleID, String vehicleString) {
+        String filepath=path+dealerID;
         List<String> lines= new ArrayList<>();
         String line;
         try{
@@ -122,7 +93,7 @@ public class VehicleIO {
             FileReader fr=new FileReader(f);
             BufferedReader br=new BufferedReader(fr);
             while((line=br.readLine())!=null) {
-                if (getallVehicleID(dealerID).size() == 0) {
+                if (findAllBasedOnMode("ID",dealerID).size() == 0) {
                     return false;
                 }
                 if (line.contains(vehicleID)) {
@@ -134,20 +105,21 @@ public class VehicleIO {
             br.close();
 
             FileWriter fw=new FileWriter(f);
-                BufferedWriter bw=new BufferedWriter(fw);
+            BufferedWriter bw=new BufferedWriter(fw);
             for(String s:lines) bw.write(s);
-                fw.flush();
-                fw.close();
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-
+            fw.flush();
+            fw.close();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         return true;
+
     }
 
-    public static boolean deleteVehicleFromDealer(String dealerID, String vehicleID) {
-        String filepath=pathway+dealerID;
-        String temppath=pathway+"Temp.txt";
+    @Override
+    public boolean deleteVehiclefromDealer(String dealerID, String vehicleID) {
+        String filepath=path+dealerID;
+        String temppath=path+"Temp.txt";
         File inputFile=new File(filepath);
         File tempFile=new File(temppath);
         BufferedReader br=null;
@@ -193,5 +165,6 @@ public class VehicleIO {
 
 
         return tempFile.renameTo(inputFile);
+
     }
 }
