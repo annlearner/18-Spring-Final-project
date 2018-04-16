@@ -16,26 +16,28 @@ public class Vehicle {
     private double price;
     private URL photoUrl;
 
-    public Vehicle(String s) {
+    public static Vehicle generateVehicle(String s) {
+        Vehicle result = new Vehicle();
         String[] ss = s.split("~");
         if (ss.length == 10) {
-            this.id = ss[0];
-            this.webId = ss[1];
-            this.category = Category.getCategory(ss[2]);
-            this.year = Integer.parseInt(ss[3]);
-            this.make = ss[4];
-            this.model = ss[5];
-            this.trim = ss[6];
-            this.bodyType = ss[7];
-            this.price = Double.parseDouble(ss[8]);
+            result.id = ss[0];
+            result.webId = ss[1];
+            result.category = Category.getCategory(ss[2]);
+            result.year = Integer.parseInt(ss[3]);
+            result.make = ss[4];
+            result.model = ss[5];
+            result.trim = ss[6];
+            result.bodyType = ss[7];
+            result.price = Double.parseDouble(ss[8]);
             try {
-                this.photoUrl = new URL(ss[9]);
+                result.photoUrl = new URL(ss[9]);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         } else {
             new IllegalArgumentException().printStackTrace();
         }
+        return result;
     }
 
     public String getId() {
