@@ -4,16 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Inventory {
-    private String dealerId;
-    private Collection<Vehicle> vehicles = new ArrayList<>();
-
-    public String getDealerId() {
-        return dealerId;
-    }
-
-    public void setDealerId(String dealerId) {
-        this.dealerId = dealerId;
-    }
+    private Collection<Vehicle> vehicles;
+    private InventoryContext ic;
 
     public Collection<Vehicle> getVehicles() {
         return vehicles;
@@ -21,5 +13,13 @@ public class Inventory {
 
     public void setVehicles(Collection<Vehicle> vehicles) {
         this.vehicles = vehicles;
+    }
+
+    public InventoryContext getIc() {
+        return ic;
+    }
+
+    public void setIc(InventoryContext ic) {
+        this.ic = ic;
     }
 }
