@@ -22,6 +22,7 @@ public class VehicleManagerImple implements VehicleManager {
         String maxYear = filter.getMaxYear();
         String make = filter.getMake();
         String category = filter.getCategory();
+        String type = filter.getType();
 
         UserIO userIO = new UserIO();
         List<String> vehiclesFromDealer = userIO.getAllBasedOnMode("ID", dealerID);
@@ -44,7 +45,8 @@ public class VehicleManagerImple implements VehicleManager {
                 Vehicle vehicle = Vehicle.generateVehicle(v);
                 if (minPriceFilter(vehicle, minPrice) && maxPriceFilter(vehicle, maxPrice)
                         && minYearFilter(vehicle, minYear) && maxYearFilter(vehicle, maxYear)
-                        && makeFilter(vehicle, make) && categoryFilter(vehicle, category)) {
+                        && makeFilter(vehicle, make) && categoryFilter(vehicle, category)
+                        && typeFilter(vehicle, type)) {
                     filteredVehicles.add(vehicle);
                 }
             }
@@ -134,6 +136,13 @@ public class VehicleManagerImple implements VehicleManager {
         return vehicle.getCategory().toString().contains(category);
     }
 
+    private boolean typeFilter(Vehicle vehicle, String type) {
+
+        if (type == null || type.equals(""))
+            return true;
+        return vehicle.getBodyType().toString().contains(type);
+    }
+
     @Override
     public Collection<Vehicle> getVehiclesFromDealer(String dealerID) {
 
@@ -151,14 +160,15 @@ public class VehicleManagerImple implements VehicleManager {
     public InventoryContext getContext(String dealerID) {
 
         InventoryContext ic = new InventoryContext();
-        HashSet<String> makeSet = new HashSet<>();
-        HashSet<String> typeSet = new HashSet<>();
         Collection<Vehicle> vehicles = new ArrayList<>(getVehiclesFromDealer(dealerID));
         ic.setTotalCount(vehicles.size());
 
+        HashSet<String> makeSet = new HashSet<>();
+        HashSet<String> typeSet = new HashSet<>();
+
         for (Vehicle v : vehicles) {
             String make = v.getMake();
-            String type = v.getBodyType();
+            String type = v.getBodyType().toString();
             addToList(makeSet, make);
             addToList(typeSet, type);
         }

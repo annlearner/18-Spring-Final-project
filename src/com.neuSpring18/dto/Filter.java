@@ -10,6 +10,7 @@ public class Filter {
     private String maxYear;
     private String make;
     private String category;
+    private String type;
     private String search;
 
     public String getMinPrice() {
@@ -58,6 +59,14 @@ public class Filter {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getSearch() {
