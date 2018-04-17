@@ -70,7 +70,7 @@ public class VehicleServiceImple implements VehicleService {
         for (int i = start; i < end; i++) {
             afterSortAndPaging.add(vehicleList.get(i));
         }
-        
+
         allVehiclesInventory.setVehicles(afterSortAndPaging);
         allVehiclesInventory.setIc(vm.getContext(dealerID));
         return allVehiclesInventory;
