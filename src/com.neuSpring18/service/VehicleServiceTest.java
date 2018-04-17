@@ -10,7 +10,7 @@ public class VehicleServiceTest {
 
 
         VehicleService vs = new VehicleServiceImple();
-        for (Vehicle vehicle : vs.getVehiclesByDealer("gmps-curry").getVehicles()) {
+        for (Vehicle vehicle : vs.findVehiclesByDealer("gmps-curry").getVehicles()) {
             System.out.println(vehicle);
         }
 
@@ -22,7 +22,7 @@ public class VehicleServiceTest {
         Paging p = new Paging();
         p.setPageNum(1);
         p.setPerPage(10);
-        for (Vehicle vehicle : vs.getVehiclesByFilter("gmps-curry", f, s, p).getVehicles()) {
+        for (Vehicle vehicle : vs.findVehiclesByFilter("gmps-curry", f, s, p).getVehicles()) {
             System.out.println(vehicle);
         }
 

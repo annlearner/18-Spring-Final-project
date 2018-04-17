@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserIO implements UserIOInterface {
-    private String path=System.getProperty("user.dir")+"\\data\\";
+    private String path=System.getProperty("user.dir")+File.separatorChar+"data"+File.separatorChar;
     private BufferedWriter bw=null;
     private BufferedReader br=null;
 

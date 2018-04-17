@@ -14,7 +14,7 @@ public class VehicleServiceImple implements VehicleService {
     @Override
     public Inventory findVehiclesByFilter(String dealerID, Filter filter, Sorting sorting, Paging paging) {
         VehicleManagerImple vm = new VehicleManagerImple();//need to change the input depend on dto
-        Collection<Vehicle> vehicles = vm.getVehicleFromDealer(dealerID,filter);
+        Collection<Vehicle> vehicles = vm.searchVehiclesByFilter(dealerID,filter);
         Collection<Vehicle> afterSortAndPaging = new ArrayList<Vehicle>();
         List<Vehicle> vehicleList = new ArrayList<Vehicle>(vehicles);
         Inventory vehiclesInventory = new Inventory();
@@ -78,7 +78,7 @@ public class VehicleServiceImple implements VehicleService {
     public Inventory findVehiclesByDealer(String dealerID) {
         Inventory allVehiclesInventory = new Inventory();
         VehicleManagerImple vm = new VehicleManagerImple();
-        Collection<Vehicle> vehicles = vm.getVehicleFromDealer();
+        Collection<Vehicle> vehicles = vm.getVehiclesFromDealer(dealerID);
         allVehiclesInventory.setIc(vm.getContext(dealerID));
         allVehiclesInventory.setVehicles(vehicles);
         return allVehiclesInventory;
