@@ -6,36 +6,28 @@ import java.util.List;
 
 public class UserIO implements UserIOInterface {
     private String path=System.getProperty("user.dir")+"\\data\\";
+    private BufferedWriter bw=null;
+    private BufferedReader br=null;
 
     @Override
     public List<String> getAllBasedOnMode(String mode, String filename) {
         String file=path+filename;
         List<String> result = new ArrayList<>();
-        BufferedReader br=null;
         try {
             br = new BufferedReader(new FileReader(file));
             String read;
             while ((read = br.readLine()) != null) {
                 if (mode.equals("ID")) {
                     String[] splited = read.split("\t");
-                    if (splited.length > 0) {
+                    if (splited.length > 0)
                         result.add(splited[0]);
-                    }
-                } else if (mode.equals("All")) {
+                } else if (mode.equals("All"))
                     result.add(read);
-                }
             }
         }catch(Exception e){
-            System.out.println("There was a problem: "+e);
             e.printStackTrace();
         }finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            closeReader(br);
         }
         return result;
     }
@@ -50,7 +42,6 @@ public class UserIO implements UserIOInterface {
         }
         //add the info to file
         FileWriter fw=null;
-        BufferedWriter bw=null;
         try {
             fw=new FileWriter(selected,true);
         } catch (IOException e) {
@@ -84,14 +75,14 @@ public class UserIO implements UserIOInterface {
     }
 
     @Override
-    public boolean editVehicleofDealer(String dealerID, String vehicleID, String vehicleString) {
+    public boolean editVehicleOfDealer(String dealerID, String vehicleID, String vehicleString) {
         String filepath=path+dealerID;
         List<String> lines= new ArrayList<>();
         String line;
         try{
             File f=new File(filepath);
             FileReader fr=new FileReader(f);
-            BufferedReader br=new BufferedReader(fr);
+            br=new BufferedReader(fr);
             while((line=br.readLine())!=null) {
                 if (getAllBasedOnMode("ID",dealerID).size() == 0) {
                     return false;
@@ -101,41 +92,39 @@ public class UserIO implements UserIOInterface {
                 }
                 lines.add(line);
             }
-            fr.close();
-            br.close();
+            closeReader(fr);
+            closeReader(br);
 
             FileWriter fw=new FileWriter(f);
-            BufferedWriter bw=new BufferedWriter(fw);
+            bw=new BufferedWriter(fw);
             for(String s:lines) bw.write(s);
             fw.flush();
-            fw.close();
+            closeWriter(fw);
         }catch(Exception ex){
             ex.printStackTrace();
         }
         return true;
-
     }
 
     @Override
-    public boolean deleteVehiclefromDealer(String dealerID, String vehicleID) {
+    public boolean deleteVehicleFromDealer(String dealerID, String vehicleID) {
         String filepath=path+dealerID;
         String temppath=path+"Temp.txt";
         File inputFile=new File(filepath);
         File tempFile=new File(temppath);
-        BufferedReader br=null;
+        String cur_line;
+        bw=null;
+
         try{
             br=new BufferedReader(new FileReader(inputFile));
-
         }catch(FileNotFoundException e){
             e.printStackTrace();
         }
-        BufferedWriter bw=null;
         try{
             bw=new BufferedWriter(new FileWriter(tempFile));
         }catch (IOException ie){
             ie.printStackTrace();
         }
-        String cur_line;
         try{
             if (br != null) {
                 while((cur_line=br.readLine())!=null){
@@ -153,18 +142,30 @@ public class UserIO implements UserIOInterface {
         }catch(IOException ie2) {
             ie2.printStackTrace();
         }finally {
-            try {
-                if (bw != null) {
-                    bw.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            closeWriter(bw);
         }
-
-
         return tempFile.renameTo(inputFile);
 
     }
+
+    private void closeReader(Reader r){
+        try {
+            if(r!=null) {
+                r.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void closeWriter(Writer w){
+        try {
+            if(w!=null) {
+                w.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
