@@ -1,10 +1,7 @@
 package com.neuSpring18.service;
 
 import com.neuSpring18.dao.VehicleManagerImple;
-import com.neuSpring18.dto.Filter;
-import com.neuSpring18.dto.Paging;
-import com.neuSpring18.dto.Sorting;
-import com.neuSpring18.dto.Vehicle;
+import com.neuSpring18.dto.*;
 
 import java.util.*;
 
@@ -15,7 +12,7 @@ import static com.neuSpring18.dto.Sorting.DESCEND_PRICE;
 public class VehicleServiceImple implements VehicleService {
 
     @Override
-    public Inventory getVehiclesByFilter(String dealerID, Filter filter, Sorting sorting, Paging paging) {
+    public Inventory findVehiclesByFilter(String dealerID, Filter filter, Sorting sorting, Paging paging) {
         VehicleManagerImple vm = new VehicleManagerImple();//need to change the input depend on dto
         Collection<Vehicle> vehicles = vm.getVehicleFromDealer(dealerID,filter);
         Collection<Vehicle> afterSortAndPaging = new ArrayList<Vehicle>();
@@ -78,7 +75,7 @@ public class VehicleServiceImple implements VehicleService {
 
 
     @Override
-    public Inventory getVehiclesByDealer(String dealerID) {
+    public Inventory findVehiclesByDealer(String dealerID) {
         Inventory allVehiclesInventory = new Inventory();
         VehicleManagerImple vm = new VehicleManagerImple();
         Collection<Vehicle> vehicles = vm.getVehicleFromDealer();
