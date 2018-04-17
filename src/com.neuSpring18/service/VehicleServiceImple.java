@@ -16,8 +16,8 @@ public class VehicleServiceImple implements VehicleService {
 
     @Override
     public Inventory getVehiclesByFilter(String dealerID, Filter filter, Sorting sorting, Paging paging) {
-        VehicleManagerImple vm = new VehicleManagerImple(dealerID);//need to change the input depend on dto
-        Collection<Vehicle> vehicles = vm.getVehicleFromDealer(filter);
+        VehicleManagerImple vm = new VehicleManagerImple();//need to change the input depend on dto
+        Collection<Vehicle> vehicles = vm.getVehicleFromDealer(dealerID,filter);
         Collection<Vehicle> afterSortAndPaging = new ArrayList<Vehicle>();
         List<Vehicle> vehicleList = new ArrayList<Vehicle>(vehicles);
         Inventory vehiclesInventory = new Inventory();
@@ -70,6 +70,7 @@ public class VehicleServiceImple implements VehicleService {
         for (int i = start; i < end; i++) {
             afterSortAndPaging.add(vehicleList.get(i));
         }
+        
         allVehiclesInventory.setVehicles(afterSortAndPaging);
         allVehiclesInventory.setIc(vm.getContext(dealerID));
         return allVehiclesInventory;
@@ -79,7 +80,7 @@ public class VehicleServiceImple implements VehicleService {
     @Override
     public Inventory getVehiclesByDealer(String dealerID) {
         Inventory allVehiclesInventory = new Inventory();
-        VehicleManagerImple vm = new VehicleManagerImple(dealerID);
+        VehicleManagerImple vm = new VehicleManagerImple();
         Collection<Vehicle> vehicles = vm.getVehicleFromDealer();
         allVehiclesInventory.setIc(vm.getContext(dealerID));
         allVehiclesInventory.setVehicles(vehicles);
@@ -88,19 +89,19 @@ public class VehicleServiceImple implements VehicleService {
 
     @Override
     public String addVehicle(String dealerID, Vehicle v) {
-        VehicleManagerImple vm = new VehicleManagerImple(dealerID);
-        return vm.addVehicle(v);
+        VehicleManagerImple vm = new VehicleManagerImple();
+        return vm.addVehicle(dealerID,v);
     }
 
     @Override
     public boolean editVehicle(String dealerID, Vehicle v) {
-        VehicleManagerImple vm = new VehicleManagerImple(dealerID);
-        return vm.editVehicle(v);
+        VehicleManagerImple vm = new VehicleManagerImple();
+        return vm.editVehicle(dealerID,v);
     }
 
     @Override
     public boolean removeVehicle(String dealerID, String vehicleID) {
-        VehicleManagerImple vm = new VehicleManagerImple(dealerID);
-        return vm.deleteVehicle(vehicleID);
+        VehicleManagerImple vm = new VehicleManagerImple();
+        return vm.deleteVehicle(dealerID,vehicleID);
     }
 }
