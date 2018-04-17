@@ -51,7 +51,15 @@ public class VehicleServiceImple implements VehicleService {
                         return 1;
                 }
             });
-        }
+        }else if(sorting.equals(Default)){
+            Collections.sort(vehicleList, new Comparator<Vehicle>() {
+                public int compare(Vehicle v1, Vehicle v2) {
+                    if (Integer.parseInt(v1.getId()) <= Integer.parseInt( v2.getId()))
+                        return -1;
+                    else
+                        return 1;
+                }
+            });}
         int totalPage = 0;
         if(vehicleList.size() % paging.getPerPage() == 0 )
             totalPage = vehicleList.size() / paging.getPerPage();
