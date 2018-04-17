@@ -14,19 +14,19 @@ import static com.neuSpring18.dto.Sorting.DESCEND_PRICE;
 
 public class VehicleServiceImple implements VehicleService {
 
-    private VehicleManagerImple vm;
-    Collection<Vehicle> temp;
-    Collection<Vehicle> afterSortAndPaging = new ArrayList<Vehicle>();
     @Override
-    public Collection<Vehicle> getVehiclesByFilter(String dealerID, Filter filter, Sorting sorting, Paging paging) {
-        vm = new VehicleManagerImple(dealerID);
-        temp = vm.getVehicleFromDealer(filter);
-        List<Vehicle> list = new ArrayList<Vehicle>(temp);
+    public Inventory getVehiclesByFilter(String dealerID, Filter filter, Sorting sorting, Paging paging) {
+        VehicleManagerImple vm = new VehicleManagerImple();//need to change the input depend on dto
+        Collection<Vehicle> vehicles = vm.getVehicleFromDealer(dealerID,filter);
+        Collection<Vehicle> afterSortAndPaging = new ArrayList<Vehicle>();
+        List<Vehicle> vehicleList = new ArrayList<Vehicle>(vehicles);
+        Inventory vehiclesInventory = new Inventory();
+        Inventory allVehiclesInventory = new Inventory();
         int numPerPage = paging.getPerPage();
 
 
         if (sorting.equals(ASCEND_PRICE)) {
-            Collections.sort(list, new Comparator<Vehicle>() {
+            Collections.sort(vehicleList, new Comparator<Vehicle>() {
                 public int compare(Vehicle v1, Vehicle v2) {
                     if (v1.getPrice() <= v2.getPrice())
                         return -1;
@@ -36,7 +36,7 @@ public class VehicleServiceImple implements VehicleService {
             });
         } else if (sorting.equals(DESCEND_PRICE)) {
             {
-                Collections.sort(list, new Comparator<Vehicle>() {
+                Collections.sort(vehicleList, new Comparator<Vehicle>() {
                     public int compare(Vehicle v1, Vehicle v2) {
                         if (v1.getPrice() <= v2.getPrice())
                             return 1;
@@ -46,7 +46,7 @@ public class VehicleServiceImple implements VehicleService {
                 });
             }
         } else if (sorting.equals(ASCEND_YEAR)) {
-            Collections.sort(list, new Comparator<Vehicle>() {
+            Collections.sort(vehicleList, new Comparator<Vehicle>() {
                 public int compare(Vehicle v1, Vehicle v2) {
                     if (v1.getYear() <= v2.getYear())
                         return -1;
@@ -55,41 +55,53 @@ public class VehicleServiceImple implements VehicleService {
                 }
             });
         }
+        int totalPage = 0;
+        if(vehicleList.size() % paging.getPerPage() == 0 )
+            totalPage = vehicleList.size() / paging.getPerPage();
+        else
+            totalPage = (vehicleList.size() / paging.getPerPage()) + 1;
 
         int start = paging.getPageNum() * paging.getPerPage() - paging.getPerPage();
         int end;
-        if (paging.getPageNum() * paging.getPerPage() > list.size()) {
-            end = list.size();
+        if (paging.getPageNum() * paging.getPerPage() > vehicleList.size()) {
+            end = vehicleList.size();
         } else
             end = paging.getPageNum() * paging.getPerPage();
         for (int i = start; i < end; i++) {
-            afterSortAndPaging.add(list.get(i));
+            afterSortAndPaging.add(vehicleList.get(i));
         }
-        return afterSortAndPaging;
-
+        
+        allVehiclesInventory.setVehicles(afterSortAndPaging);
+        allVehiclesInventory.setIc(vm.getContext(dealerID));
+        return allVehiclesInventory;
     }
 
+
     @Override
-    public Collection<Vehicle> getVehiclesByDealer(String dealerID) {
-        vm = new VehicleManagerImple(dealerID);
-        return vm.getVehicleFromDealer();
+    public Inventory getVehiclesByDealer(String dealerID) {
+        Inventory allVehiclesInventory = new Inventory();
+        VehicleManagerImple vm = new VehicleManagerImple();
+        Collection<Vehicle> vehicles = vm.getVehicleFromDealer();
+        allVehiclesInventory.setIc(vm.getContext(dealerID));
+        allVehiclesInventory.setVehicles(vehicles);
+        return allVehiclesInventory;
     }
 
     @Override
     public String addVehicle(String dealerID, Vehicle v) {
-        VehicleManagerImple vm = new VehicleManagerImple(dealerID);
-        return vm.addVehicle(v);
+        VehicleManagerImple vm = new VehicleManagerImple();
+        return vm.addVehicle(dealerID,v);
     }
 
     @Override
     public boolean editVehicle(String dealerID, Vehicle v) {
-        VehicleManagerImple vm = new VehicleManagerImple(dealerID);
-        return vm.editVehicle(v);
+        VehicleManagerImple vm = new VehicleManagerImple();
+        return vm.editVehicle(dealerID,v);
     }
 
     @Override
     public boolean removeVehicle(String dealerID, String vehicleID) {
-        VehicleManagerImple vm = new VehicleManagerImple(dealerID);
-        return vm.deleteVehicle(vehicleID);
+        VehicleManagerImple vm = new VehicleManagerImple();
+        return vm.deleteVehicle(dealerID,vehicleID);
     }
 }
