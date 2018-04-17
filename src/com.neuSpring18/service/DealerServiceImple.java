@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public class DealerServiceImple implements DealerService {
     @Override
-    public Collection<Dealer> getAllDealers() {
+    public Collection<Dealer> findAllDealers() {
         return new DealerManagerImple().getAllDealers();
     }
 }
