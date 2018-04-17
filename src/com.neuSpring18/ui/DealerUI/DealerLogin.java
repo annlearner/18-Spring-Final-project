@@ -11,7 +11,6 @@ import java.net.URL;
 
 public class DealerLogin extends DealerCommonFrame {
 
-    public static JFrame myFrame;
     public BackgroundPanel backgroundPanel;
 
 
