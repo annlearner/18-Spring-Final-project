@@ -21,8 +21,8 @@ public class VehicleManagerImple implements VehicleManager {
         String minYear = filter.getMinYear();
         String maxYear = filter.getMaxYear();
         String make = filter.getMake();
-        String category = filter.getCategory();
-        String type = filter.getType();
+        List<String> categoryList = filter.getCategory();
+        List<String> typeList = filter.getType();
 
         UserIO userIO = new UserIO();
         List<String> vehiclesFromDealer = userIO.getAllBasedOnMode("ID", dealerID);
@@ -45,8 +45,8 @@ public class VehicleManagerImple implements VehicleManager {
                 Vehicle vehicle = Vehicle.generateVehicle(v);
                 if (minPriceFilter(vehicle, minPrice) && maxPriceFilter(vehicle, maxPrice)
                         && minYearFilter(vehicle, minYear) && maxYearFilter(vehicle, maxYear)
-                        && makeFilter(vehicle, make) && categoryFilter(vehicle, category)
-                        && typeFilter(vehicle, type)) {
+                        && makeFilter(vehicle, make) && categoryFilter(vehicle, categoryList)
+                        && typeFilter(vehicle, typeList)) {
                     filteredVehicles.add(vehicle);
                 }
             }
@@ -129,18 +129,28 @@ public class VehicleManagerImple implements VehicleManager {
         return vehicle.getMake().contains(make);
     }
 
-    private boolean categoryFilter(Vehicle vehicle, String category) {
+    private boolean categoryFilter(Vehicle vehicle, List<String> categoryList) {
 
-        if (category == null || category.equals(""))
+        if (categoryList == null)
             return true;
-        return vehicle.getCategory().toString().contains(category);
+        String category = vehicle.getCategory().toString();
+        for (String s : categoryList) {
+            if (s.equals(category) || s.equals(""))
+                return true;
+        }
+        return false;
     }
 
-    private boolean typeFilter(Vehicle vehicle, String type) {
+    private boolean typeFilter(Vehicle vehicle, List<String> typeList) {
 
-        if (type == null || type.equals(""))
+        if (typeList == null)
             return true;
-        return vehicle.getBodyType().toString().contains(type);
+        String type = vehicle.getBodyType().toString();
+        for (String s : typeList) {
+            if (s.equals(type) || s.equals(""))
+                return true;
+        }
+        return false;
     }
 
     @Override
