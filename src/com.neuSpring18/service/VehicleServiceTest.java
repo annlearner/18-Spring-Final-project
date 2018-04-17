@@ -27,12 +27,17 @@ public class VehicleServiceTest {
         }
 
 
-//        String addString = "~gmps-curry~new~2018~Chevrolet~Equinox~AWD LS~SUV~28195.0~http://inventory-dmg.assets-cdk.com/3/3/3/14256931333x90.jpg";
-//        String editString = "2970165824~gmps-curry~new~2018~Chevrolet~Equinox~AWD LS~SUV~28195.0~http://inventory-dmg.assets-cdk.com/3/3/3/14256931333x90.jpg";
-//        Vehicle v = new Vehicle(addString);
-//        System.out.println(vs.addVehicle("gmps-curry", v));
-//        v = new Vehicle(editString);
-//        System.out.println(vs.editVehicle("gmps-curry", v));
-//        System.out.println(vs.removeVehicle("gmps-curry", v.getId()));
+        String addString = "~gmps-curry~new~2018~Heihei~Equinox~AWD LS~SUV~28195.0~http://inventory-dmg.assets-cdk.com/3/3/3/14256931333x90.jpg";
+        Vehicle v = Vehicle.generateVehicle(addString);
+        String newID = vs.addVehicle("gmps-curry", v);
+        System.out.println(newID);
+        String editString = newID + "~gmps-curry~new~2018~Lalala~Equinox~AWD LS~SUV~28195.0~http://inventory-dmg.assets-cdk.com/3/3/3/14256931333x90.jpg";
+        v = Vehicle.generateVehicle(editString);
+        if (vs.editVehicle("gmps-curry", v)) {
+            System.out.println("Edit success");
+        }
+        if (vs.removeVehicle("gmps-curry", newID)) {
+            System.out.println("Delete success");
+        }
     }
 }
