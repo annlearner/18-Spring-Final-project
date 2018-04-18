@@ -59,12 +59,8 @@ public class VehicleManagerImple implements VehicleManager {
         if (search == null || search.equals(""))
             return true;
 
-        search = search.toLowerCase();
-        String vehicleString = vehicle.toSearchString().toLowerCase();
-        String[] arr = search.split(" +");
-
-        for (String s : arr) {
-            if (!vehicleString.contains(s))
+        for (String s : search.toLowerCase().split(" +")) {
+            if (!vehicle.toSearchString().toLowerCase().contains(s))
                 return false;
         }
 
@@ -72,72 +68,35 @@ public class VehicleManagerImple implements VehicleManager {
     }
 
     private boolean minPriceFilter(Vehicle vehicle, String minPrice) {
-
-        if (minPrice == null || minPrice.equals(""))
-            return true;
-        double vehiclePrice = vehicle.getPrice();
-        double min = Double.parseDouble(minPrice);
-        if (vehiclePrice >= min)
-            return true;
-
-        return false;
+        return minPrice == null || minPrice.equals("") || vehicle.getPrice() >= Double.parseDouble(minPrice);
     }
 
     private boolean maxPriceFilter(Vehicle vehicle, String maxPrice) {
-
-        if (maxPrice == null || maxPrice.equals(""))
-            return true;
-
-        double vehiclePrice = vehicle.getPrice();
-        double max = Double.parseDouble(maxPrice);
-        if (vehiclePrice <= max)
-            return true;
-
-        return false;
+        return maxPrice == null || maxPrice.equals("") || vehicle.getPrice() <= Double.parseDouble(maxPrice);
     }
 
     private boolean minYearFilter(Vehicle vehicle, String minYear) {
-
-        if (minYear == null || minYear.equals(""))
-            return true;
-
-        int vehicleYear = vehicle.getYear();
-        int min = Integer.parseInt(minYear);
-        if (vehicleYear >= min)
-            return true;
-
-        return false;
+        return minYear == null || minYear.equals("") || vehicle.getYear() >= Integer.parseInt(minYear);
     }
 
     private boolean maxYearFilter(Vehicle vehicle, String maxYear) {
-
-        if (maxYear == null || maxYear.equals(""))
-            return true;
-
-        int vehicleYear = vehicle.getYear();
-        int max = Integer.parseInt(maxYear);
-        if (vehicleYear <= max)
-            return true;
-
-        return false;
+        return maxYear == null || maxYear.equals("") || vehicle.getYear() <= Integer.parseInt(maxYear);
     }
 
     private boolean makeFilter(Vehicle vehicle, String make) {
-
-        if (make == null || make.equals(""))
-            return true;
-        return vehicle.getMake().contains(make);
+        return make == null || make.equals("") || vehicle.getMake().contains(make);
     }
 
     private boolean categoryFilter(Vehicle vehicle, List<String> categoryList) {
 
         if (categoryList == null)
             return true;
-        String category = vehicle.getCategory().toString();
+
         for (String s : categoryList) {
-            if (s.equals(category) || s.equals(""))
+            if (s.equals(vehicle.getCategory().toString()) || s.equals(""))
                 return true;
         }
+
         return false;
     }
 
@@ -145,11 +104,12 @@ public class VehicleManagerImple implements VehicleManager {
 
         if (typeList == null)
             return true;
-        String type = vehicle.getBodyType().toString();
+
         for (String s : typeList) {
-            if (s.equals(type) || s.equals(""))
+            if (s.equals(vehicle.getBodyType().toString()) || s.equals(""))
                 return true;
         }
+
         return false;
     }
 

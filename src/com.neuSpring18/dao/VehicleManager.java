@@ -1,6 +1,5 @@
 package com.neuSpring18.dao;
 
-import com.neuSpring18.dto.Dealer;
 import com.neuSpring18.dto.Filter;
 import com.neuSpring18.dto.InventoryContext;
 import com.neuSpring18.dto.Vehicle;
