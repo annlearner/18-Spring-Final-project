@@ -8,55 +8,76 @@ import java.util.*;
 import static com.neuSpring18.dto.Sorting.ASCEND_PRICE;
 import static com.neuSpring18.dto.Sorting.ASCEND_YEAR;
 import static com.neuSpring18.dto.Sorting.DESCEND_PRICE;
+import static com.neuSpring18.dto.Sorting.DESCEND_YEAR;
+import static com.neuSpring18.dto.Sorting.DEFAULT;
 
 public class VehicleServiceImple implements VehicleService {
 
     @Override
     public Inventory findVehiclesByFilter(String dealerID, Filter filter, Sorting sorting, Paging paging) {
-        VehicleManagerImple vm = new VehicleManagerImple();//need to change the input depend on dto
+        VehicleManagerImple vm = new VehicleManagerImple();
         Collection<Vehicle> vehicles = vm.searchVehiclesByFilter(dealerID,filter);
         Collection<Vehicle> afterSortAndPaging = new ArrayList<Vehicle>();
         List<Vehicle> vehicleList = new ArrayList<Vehicle>(vehicles);
-        Inventory vehiclesInventory = new Inventory();
-        Inventory allVehiclesInventory = new Inventory();
-        int numPerPage = paging.getPerPage();
+        Inventory VehiclesInventory = new Inventory();
 
-
+      
         if (sorting.equals(ASCEND_PRICE)) {
             Collections.sort(vehicleList, new Comparator<Vehicle>() {
                 public int compare(Vehicle v1, Vehicle v2) {
-                    if (v1.getPrice() <= v2.getPrice())
+                    if (v1.getPrice() < v2.getPrice())
                         return -1;
+                    else if (v1.getPrice() == v2.getPrice())
+                        return 0;
                     else
                         return 1;
                 }
             });
         } else if (sorting.equals(DESCEND_PRICE)) {
-            {
-                Collections.sort(vehicleList, new Comparator<Vehicle>() {
-                    public int compare(Vehicle v1, Vehicle v2) {
-                        if (v1.getPrice() <= v2.getPrice())
-                            return 1;
-                        else
-                            return -1;
-                    }
-                });
-            }
+            Collections.sort(vehicleList, new Comparator<Vehicle>() {
+                public int compare(Vehicle v1, Vehicle v2) {
+                    if (v1.getPrice() < v2.getPrice())
+                        return 1;
+                    else if (v1.getPrice() == v2.getPrice())
+                        return 0;
+                    else
+                        return -1;
+                }
+            });
         } else if (sorting.equals(ASCEND_YEAR)) {
             Collections.sort(vehicleList, new Comparator<Vehicle>() {
                 public int compare(Vehicle v1, Vehicle v2) {
-                    if (v1.getYear() <= v2.getYear())
+                    if (v1.getYear() < v2.getYear())
                         return -1;
+                    else if (v1.getYear() == v2.getYear())
+                        return 0;
+                    else
+                        return 1;
+                }
+            });
+        } else if (sorting.equals(DESCEND_YEAR)) {
+            Collections.sort(vehicleList, new Comparator<Vehicle>() {
+                public int compare(Vehicle v1, Vehicle v2) {
+                    if (v1.getYear() < v2.getYear())
+                        return 1;
+                    else if (v1.getYear() == v2.getYear())
+                        return 0;
+                    else
+                        return -1;
+                }
+            });
+        } else if (sorting.equals(DEFAULT)) {
+            Collections.sort(vehicleList, new Comparator<Vehicle>() {
+                public int compare(Vehicle v1, Vehicle v2) {
+                    if (Long.parseLong(v1.getId()) < Long.parseLong(v2.getId()))
+                        return -1;
+                    else if (Long.parseLong(v1.getId()) == Long.parseLong(v2.getId()))
+                        return 0;
                     else
                         return 1;
                 }
             });
         }
-        int totalPage = 0;
-        if(vehicleList.size() % paging.getPerPage() == 0 )
-            totalPage = vehicleList.size() / paging.getPerPage();
-        else
-            totalPage = (vehicleList.size() / paging.getPerPage()) + 1;
 
         int start = paging.getPageNum() * paging.getPerPage() - paging.getPerPage();
         int end;
@@ -68,9 +89,9 @@ public class VehicleServiceImple implements VehicleService {
             afterSortAndPaging.add(vehicleList.get(i));
         }
 
-        allVehiclesInventory.setVehicles(afterSortAndPaging);
-        allVehiclesInventory.setIc(vm.getContext(dealerID));
-        return allVehiclesInventory;
+        VehiclesInventory.setVehicles(afterSortAndPaging);
+        VehiclesInventory.setIc(vm.getContext(dealerID));
+        return VehiclesInventory;
     }
 
 
