@@ -25,7 +25,7 @@ public class VehicleManagerImple implements VehicleManager {
         List<String> typeList = filter.getType();
 
         UserIO userIO = new UserIO();
-        List<String> vehiclesFromDealer = userIO.getAllBasedOnMode("ID", dealerID);
+        List<String> vehiclesFromDealer = userIO.getAllBasedOnMode("All", dealerID);
         vehiclesFromDealer.remove(0);
         Collection<Vehicle> filteredVehicles = new ArrayList<Vehicle>();
 
@@ -157,7 +157,7 @@ public class VehicleManagerImple implements VehicleManager {
     public Collection<Vehicle> getVehiclesFromDealer(String dealerID) {
 
         UserIO userIO = new UserIO();
-        List<String> vehiclesFromDealer = userIO.getAllBasedOnMode("ID", dealerID);
+        List<String> vehiclesFromDealer = userIO.getAllBasedOnMode("All", dealerID);
         vehiclesFromDealer.remove(0);
         Collection<Vehicle> vehicles = new ArrayList<Vehicle>();
         for (String v : vehiclesFromDealer) {
