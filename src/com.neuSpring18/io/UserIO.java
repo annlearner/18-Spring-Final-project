@@ -16,11 +16,19 @@ public class UserIO implements UserIOInterface {
         try {
             br = new BufferedReader(new FileReader(file));
             String read;
+            String[] splited;
             while ((read = br.readLine()) != null) {
                 if (mode.equals("ID")) {
-                    String[] splited = read.split("\t");
+
+                    if(filename.equals("dealers")) {
+                        splited = read.split("\t");
+                    }else {
+                        splited=read.split("~");
+                    }
+
                     if (splited.length > 0)
                         result.add(splited[0]);
+
                 } else if (mode.equals("All"))
                     result.add(read);
             }
@@ -32,12 +40,13 @@ public class UserIO implements UserIOInterface {
         return result;
     }
 
+
     @Override
     public String addVehicleToDealer(String dealerID, String vehicleString) {
         String selected=path+dealerID;
         String newID=null;
         //hasID no? then generate Id
-        while(hasId(selected,newID)) {
+        if(!hasId(dealerID,newID)) {
             newID = generateId();
         }
         //add the info to file
@@ -52,7 +61,7 @@ public class UserIO implements UserIOInterface {
         }
         if (bw != null) {
             try (PrintWriter pw = new PrintWriter(bw)) {
-                pw.println(vehicleString);
+                pw.println(newID+"~"+dealerID+"~"+vehicleString);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -76,76 +85,61 @@ public class UserIO implements UserIOInterface {
 
     @Override
     public boolean editVehicleOfDealer(String dealerID, String vehicleID, String vehicleString) {
-        String filepath=path+dealerID;
-        List<String> lines= new ArrayList<>();
-        String line;
-        try{
-            File f=new File(filepath);
-            FileReader fr=new FileReader(f);
-            br=new BufferedReader(fr);
-            while((line=br.readLine())!=null) {
-                if (getAllBasedOnMode("ID",dealerID).size() == 0) {
-                    return false;
-                }
-                if (line.contains(vehicleID)) {
-                    line = line.replace(vehicleID + ".*?", vehicleID + vehicleString);
-                }
-                lines.add(line);
-            }
-            closeReader(fr);
-            closeReader(br);
+        boolean success=true;
+        String f=path+dealerID;
+        File file=new File(f);
+        String target=vehicleID;
+        String replace=vehicleID+"~"+dealerID+"~"+vehicleString;
+        FileWriter fw = null;
 
-            FileWriter fw=new FileWriter(f);
-            bw=new BufferedWriter(fw);
-            for(String s:lines) bw.write(s);
-            fw.flush();
+        try {
+            br=new BufferedReader(new FileReader(file));
+            String line;
+            String wholeline=" ";
+            while((line=br.readLine())!=null) {
+                wholeline+=line+System.lineSeparator();
+            }
+            wholeline=wholeline.replace(target,replace);
+            fw=new FileWriter(file);
+            fw.write(wholeline);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }finally {
+            closeReader(br);
             closeWriter(fw);
-        }catch(Exception ex){
-            ex.printStackTrace();
         }
-        return true;
+        return success;
     }
 
     @Override
     public boolean deleteVehicleFromDealer(String dealerID, String vehicleID) {
+        String cur_line;
+        boolean successful=false;
         String filepath=path+dealerID;
-        String temppath=path+"Temp.txt";
+        String temppath=path+"Temp";
         File inputFile=new File(filepath);
         File tempFile=new File(temppath);
-        String cur_line;
-        bw=null;
-
-        try{
+        try {
             br=new BufferedReader(new FileReader(inputFile));
-        }catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
-        try{
             bw=new BufferedWriter(new FileWriter(tempFile));
-        }catch (IOException ie){
-            ie.printStackTrace();
-        }
-        try{
-            if (br != null) {
-                while((cur_line=br.readLine())!=null){
-                    String trimmedLine=cur_line.trim();
-                    if(trimmedLine.contains(vehicleID)) continue;
-                    try{
-                        if (bw != null) {
-                            bw.write(cur_line);
-                        }
-                    }catch(IOException ie){
-                        ie.printStackTrace();
-                    }
-                }
+            while((cur_line=br.readLine())!=null) {
+                if(cur_line.trim().contains(vehicleID)) continue;
+                bw.write(cur_line+System.getProperty("line.separator"));
             }
-        }catch(IOException ie2) {
-            ie2.printStackTrace();
+        }catch(Exception e) {
+            e.printStackTrace();
         }finally {
-            closeWriter(bw);
+            try {
+                inputFile.delete();
+                closeReader(br);
+                closeWriter(bw);
+                inputFile.delete();
+                successful=tempFile.renameTo(inputFile);
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
         }
-        return tempFile.renameTo(inputFile);
-
+        return successful;
     }
 
     private void closeReader(Reader r){
