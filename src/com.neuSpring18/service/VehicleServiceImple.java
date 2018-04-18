@@ -9,7 +9,7 @@ import static com.neuSpring18.dto.Sorting.ASCEND_PRICE;
 import static com.neuSpring18.dto.Sorting.ASCEND_YEAR;
 import static com.neuSpring18.dto.Sorting.DESCEND_PRICE;
 import static com.neuSpring18.dto.Sorting.DESCEND_YEAR;
-import static com.neuSpring18.dto.Sorting.Default;
+import static com.neuSpring18.dto.Sorting.DEFAULT;
 
 public class VehicleServiceImple implements VehicleService {
 
@@ -66,7 +66,7 @@ public class VehicleServiceImple implements VehicleService {
                         return -1;
                 }
             });
-        } else if (sorting.equals(Default)) {
+        } else if (sorting.equals(DEFAULT)) {
             Collections.sort(vehicleList, new Comparator<Vehicle>() {
                 public int compare(Vehicle v1, Vehicle v2) {
                     if (Long.parseLong(v1.getId()) < Long.parseLong(v2.getId()))

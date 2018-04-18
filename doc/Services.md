@@ -29,3 +29,7 @@ DealerService provides get function of Dealer for customer
 ```
 Collection<Dealer> getAllDealers();
 ```
+
+### For more examples
+
+Please check the `service/DealerServiceImple.java` and `service/VehicleServecImple.java`
