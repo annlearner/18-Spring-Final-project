@@ -18,12 +18,20 @@ public class VehicleServiceImple implements VehicleService {
         VehicleManagerImple vm = new VehicleManagerImple();
         Collection<Vehicle> vehicles = vm.searchVehiclesByFilter(dealerID,filter);
         Collection<Vehicle> afterSortAndPaging = new ArrayList<Vehicle>();
-        List<Vehicle> vehicleList = new ArrayList<Vehicle>(vehicles);
+        ArrayList<Vehicle> vehicleList = new ArrayList<>(vehicles);
         Inventory VehiclesInventory = new Inventory();
 
-      
+        vehicleList = sorting(vehicleList,sorting);
+        afterSortAndPaging = paging(vehicleList, paging);
+
+        VehiclesInventory.setVehicles(afterSortAndPaging);
+        VehiclesInventory.setIc(vm.getContext(dealerID));
+        return VehiclesInventory;
+    }
+
+    private ArrayList<Vehicle> sorting(ArrayList<Vehicle> list, Sorting sorting ){
         if (sorting.equals(ASCEND_PRICE)) {
-            Collections.sort(vehicleList, new Comparator<Vehicle>() {
+            Collections.sort(list, new Comparator<Vehicle>() {
                 public int compare(Vehicle v1, Vehicle v2) {
                     if (v1.getPrice() < v2.getPrice())
                         return -1;
@@ -34,7 +42,7 @@ public class VehicleServiceImple implements VehicleService {
                 }
             });
         } else if (sorting.equals(DESCEND_PRICE)) {
-            Collections.sort(vehicleList, new Comparator<Vehicle>() {
+            Collections.sort(list, new Comparator<Vehicle>() {
                 public int compare(Vehicle v1, Vehicle v2) {
                     if (v1.getPrice() < v2.getPrice())
                         return 1;
@@ -45,7 +53,7 @@ public class VehicleServiceImple implements VehicleService {
                 }
             });
         } else if (sorting.equals(ASCEND_YEAR)) {
-            Collections.sort(vehicleList, new Comparator<Vehicle>() {
+            Collections.sort(list, new Comparator<Vehicle>() {
                 public int compare(Vehicle v1, Vehicle v2) {
                     if (v1.getYear() < v2.getYear())
                         return -1;
@@ -56,7 +64,7 @@ public class VehicleServiceImple implements VehicleService {
                 }
             });
         } else if (sorting.equals(DESCEND_YEAR)) {
-            Collections.sort(vehicleList, new Comparator<Vehicle>() {
+            Collections.sort(list, new Comparator<Vehicle>() {
                 public int compare(Vehicle v1, Vehicle v2) {
                     if (v1.getYear() < v2.getYear())
                         return 1;
@@ -67,7 +75,7 @@ public class VehicleServiceImple implements VehicleService {
                 }
             });
         } else if (sorting.equals(DEFAULT)) {
-            Collections.sort(vehicleList, new Comparator<Vehicle>() {
+            Collections.sort(list, new Comparator<Vehicle>() {
                 public int compare(Vehicle v1, Vehicle v2) {
                     if (Long.parseLong(v1.getId()) < Long.parseLong(v2.getId()))
                         return -1;
@@ -78,22 +86,22 @@ public class VehicleServiceImple implements VehicleService {
                 }
             });
         }
+        return list;
+    }
 
+    private ArrayList<Vehicle> paging(ArrayList<Vehicle> list, Paging paging ){
+        ArrayList<Vehicle> res = new ArrayList<>();
         int start = paging.getPageNum() * paging.getPerPage() - paging.getPerPage();
         int end;
-        if (paging.getPageNum() * paging.getPerPage() > vehicleList.size()) {
-            end = vehicleList.size();
+        if (paging.getPageNum() * paging.getPerPage() > list.size()) {
+            end = list.size();
         } else
             end = paging.getPageNum() * paging.getPerPage();
         for (int i = start; i < end; i++) {
-            afterSortAndPaging.add(vehicleList.get(i));
+            res.add(list.get(i));
         }
-
-        VehiclesInventory.setVehicles(afterSortAndPaging);
-        VehiclesInventory.setIc(vm.getContext(dealerID));
-        return VehiclesInventory;
+        return res;
     }
-
 
     @Override
     public Inventory findVehiclesByDealer(String dealerID) {
