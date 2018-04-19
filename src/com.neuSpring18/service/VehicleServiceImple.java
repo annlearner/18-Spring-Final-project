@@ -115,6 +115,9 @@ public class VehicleServiceImple implements VehicleService {
 
     @Override
     public String addVehicle(String dealerID, Vehicle v) {
+        if (v.getId() != null || !v.getId().equals("")) {
+            v.setId("");
+        }
         VehicleManagerImple vm = new VehicleManagerImple();
         return vm.addVehicle(dealerID,v);
     }
