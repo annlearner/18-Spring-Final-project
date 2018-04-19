@@ -1,10 +1,10 @@
 package com.neuSpring18.dto;
 
-public enum Type {
+public enum CarType {
 
     VAN, WAGON, CAR, SUV, TRUCK, CARGOVAN, COMMERCIALVEHICLE, NOTYPE;
 
-    public static Type getType(String t) {
+    public static CarType getType(String t) {
 
         switch(t) {
 

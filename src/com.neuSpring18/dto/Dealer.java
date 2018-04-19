@@ -4,15 +4,18 @@ public class Dealer {
     private String id;
     private String locale;
     private String url;
-    public Dealer(String s) {
+
+    public static Dealer generateByString(String s) {
+        Dealer d = new Dealer();
         String[] ss = s.split("\t");
-        if (ss.length == 3) {
-            this.id = ss[0].trim();
-            this.locale = ss[1].trim();
-            this.url = ss[2].trim();
+        if (ss.length >= 3) {
+            d.id = ss[0].trim();
+            d.locale = ss[1].trim();
+            d.url = ss[2].trim();
         } else {
             new IllegalArgumentException().printStackTrace();
         }
+        return d;
     }
     public String getId() {
         return id;

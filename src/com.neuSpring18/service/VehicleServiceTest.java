@@ -44,6 +44,7 @@ public class VehicleServiceTest {
         v = Vehicle.generateVehicle(editString);
         if (vs.editVehicle("gmps-curry", v)) {
             System.out.println("Edit success");
+            System.out.println(v);
         }
 
 

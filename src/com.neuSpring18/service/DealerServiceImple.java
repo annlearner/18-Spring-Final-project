@@ -10,4 +10,9 @@ public class DealerServiceImple implements DealerService {
     public Collection<Dealer> findAllDealers() {
         return new DealerManagerImple().getAllDealers();
     }
+
+    @Override
+    public Dealer logIn(String id, String password) {
+        return new DealerManagerImple().logIn(id, password);
+    }
 }

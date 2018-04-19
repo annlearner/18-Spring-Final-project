@@ -12,7 +12,7 @@ public class Vehicle {
     private String make;
     private String model;
     private String trim;
-    private Type bodyType;
+    private CarType bodyType;
     private double price;
     private URL photoUrl;
 
@@ -27,7 +27,7 @@ public class Vehicle {
             result.make = ss[4];
             result.model = ss[5];
             result.trim = ss[6];
-            result.bodyType = Type.getType(ss[7]);
+            result.bodyType = CarType.getType(ss[7]);
             result.price = Double.parseDouble(ss[8]);
             try {
                 result.photoUrl = new URL(ss[9]);
@@ -96,11 +96,11 @@ public class Vehicle {
         this.trim = trim;
     }
 
-    public Type getBodyType() {
+    public CarType getBodyType() {
         return bodyType;
     }
 
-    public void setBodyType(Type bodyType) {
+    public void setBodyType(CarType bodyType) {
         this.bodyType = bodyType;
     }
 
