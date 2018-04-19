@@ -148,7 +148,7 @@ public class VehicleManagerImple implements VehicleManager {
         return ic;
     }
 
-    private static void addToList(HashSet<String> set, String string) {
+    private void addToList(HashSet<String> set, String string) {
         if (!set.contains(string))
             set.add(string);
     }
