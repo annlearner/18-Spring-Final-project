@@ -29,6 +29,13 @@ DealerService provides get function of Dealer for customer
 ```
 Collection<Dealer> getAllDealers();
 ```
+DealerService provides a log in function for dealer
+
+```
+Dealer logIn(String id, String password);
+// Return a dealer object if success, return null if failed
+```
+
 
 ### For more examples
 

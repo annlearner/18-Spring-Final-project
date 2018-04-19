@@ -6,4 +6,5 @@ import java.util.Collection;
 
 public interface DealerManager {
     Collection<Dealer> getAllDealers();
+    Dealer logIn(String id, String password);
 }
