@@ -20,8 +20,6 @@ public class DealerLogin extends DealerCommonFrame {
         makeItVisible();
     }
 
-
-
     public void addBackgroundPanel() {
 
         try {
@@ -128,13 +126,15 @@ public class DealerLogin extends DealerCommonFrame {
 
                 Object o = e.getSource();
                 if (o==btn_login) {
+
                     passwordFromField = new String(passwordField.getPassword());
-                    if (usernameField.getText().equals("Dealer1")&& passwordFromField.equals("HQ1234567") ){
+                    String dealerName = usernameField.getText();
+                    if (dealerName.equals("gmps-curry")&& passwordFromField.equals("HQ1234567") ){
 
                         //logic for checking password and username
 
                         dispose();
-                        //new DealerMainFrame();
+                        new DealerMainFrame(dealerName);
 
                     }else {
                         JOptionPane.showMessageDialog(c,"username and password do not match");
