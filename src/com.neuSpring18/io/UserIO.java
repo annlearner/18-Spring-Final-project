@@ -27,10 +27,8 @@ public class UserIO implements UserIOInterface {
                     }else {
                         splited=read.split("~");
                     }
-
                     if (splited.length > 0)
                         result.add(splited[0]);
-
                 } else if (mode.equals("All"))
                     result.add(read);
             }
@@ -63,7 +61,7 @@ public class UserIO implements UserIOInterface {
         }
         if (bw != null) {
             try (PrintWriter pw = new PrintWriter(bw)) {
-                pw.println(newID+"~"+dealerID+"~"+vehicleString);
+                pw.println(newID+vehicleString);
             } catch (Exception e) {
                 e.printStackTrace();
             }
