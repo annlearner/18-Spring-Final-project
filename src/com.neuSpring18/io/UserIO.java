@@ -3,6 +3,8 @@ package com.neuSpring18.io;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserIO implements UserIOInterface {
     private String path=System.getProperty("user.dir")+File.separatorChar+"data"+File.separatorChar;
@@ -88,18 +90,19 @@ public class UserIO implements UserIOInterface {
         boolean success=true;
         String f=path+dealerID;
         File file=new File(f);
-        String target=vehicleID;
-        String replace=vehicleID+"~"+dealerID+"~"+vehicleString;
         FileWriter fw = null;
-
         try {
             br=new BufferedReader(new FileReader(file));
             String line;
-            String wholeline=" ";
+            String wholeline="";
             while((line=br.readLine())!=null) {
+                if(line.contains(vehicleID)) {
+                    Pattern pattern=Pattern.compile("\\w.*");
+                    Matcher matcher=pattern.matcher(line) ;
+                    line=matcher.replaceAll(vehicleString);
+                }
                 wholeline+=line+System.lineSeparator();
             }
-            wholeline=wholeline.replace(target,replace);
             fw=new FileWriter(file);
             fw.write(wholeline);
         }catch(Exception e) {
@@ -110,6 +113,7 @@ public class UserIO implements UserIOInterface {
         }
         return success;
     }
+
 
     @Override
     public boolean deleteVehicleFromDealer(String dealerID, String vehicleID) {
