@@ -4,15 +4,6 @@ import javax.swing.*;
 
 public class DealerCommonFrame extends JFrame {
 
-    protected JButton addButton, goButton;
-
-    protected JTextField searchTextArea;
-    protected JTextField priceStart, priceEnd;
-    protected JTextField yearStart, yearEnd;
-
-    protected JLabel searchLabel;
-    protected JLabel filterLabel;
-    protected JLabel priceLabel, yearLabel, colorLabel, categoryLabel, typeLabel;
 
     protected void makeItVisible(){
 
