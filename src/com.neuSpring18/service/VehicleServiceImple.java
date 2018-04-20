@@ -25,7 +25,7 @@ public class VehicleServiceImple implements VehicleService {
         afterSortAndPaging = paging(vehicleList, paging);
 
         VehiclesInventory.setVehicles(afterSortAndPaging);
-        VehiclesInventory.setIc(vm.getContext(dealerID));
+        VehiclesInventory.setIc(vm.getContext(dealerID, filter));
         return VehiclesInventory;
     }
 
@@ -108,7 +108,7 @@ public class VehicleServiceImple implements VehicleService {
         Inventory allVehiclesInventory = new Inventory();
         VehicleManagerImple vm = new VehicleManagerImple();
         Collection<Vehicle> vehicles = vm.getVehiclesFromDealer(dealerID);
-        allVehiclesInventory.setIc(vm.getContext(dealerID));
+        allVehiclesInventory.setIc(vm.getContext(dealerID, new Filter()));
         allVehiclesInventory.setVehicles(vehicles);
         return allVehiclesInventory;
     }
