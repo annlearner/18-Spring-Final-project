@@ -3,13 +3,12 @@ import com.neuSpring18.dto.Dealer;
 import com.neuSpring18.service.DealerService;
 import com.neuSpring18.service.DealerServiceImple;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
-
-import javax.swing.*;
 
 public class DealerPage extends JFrame{
 
@@ -34,7 +33,14 @@ public class DealerPage extends JFrame{
 		setFont();
 		add();
 		jumpPage();
-		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		pack();
+		setTitle("Dealer Choice Page");
+//		public void jumpPage(){
+//		event e = new event();//互相调用
+//		comfirmButton.addActionListener(e);
+//	}
 //		image = new ImageIcon(getClass().getResource("../../../../dealer.png"));
 //		label=new JLabel(image);
 //		gbc.gridx=0;
@@ -84,7 +90,7 @@ public class DealerPage extends JFrame{
 	public void content(){
 		promptlabel=new JLabel("please choose your favoriate dealer");
 		comfirmButton=new JButton("Confirm");
-		image = new ImageIcon(getClass().getResource("../../../../dealer.png"));
+		image = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/dealer.png");
 		label=new JLabel(image);
 	}
 
@@ -129,6 +135,7 @@ public class DealerPage extends JFrame{
 	}
 	public class event implements ActionListener{
 		public void actionPerformed(ActionEvent e){
+			dispose();
 			new SearchPage((String)cmbDealerList.getSelectedItem());
 		}
 	}
@@ -140,9 +147,9 @@ public class DealerPage extends JFrame{
 //		gui.combox();
 //		gui.setFont();
 //		gui.add();
-		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		 gui.setVisible(true);
-		 gui.pack();
-		 gui.setTitle("Dealer Choice Page");
+//		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		gui.setVisible(true);
+//		gui.pack();
+//		gui.setTitle("Dealer Choice Page");
 	}
 }

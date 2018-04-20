@@ -6,9 +6,12 @@ import com.neuSpring18.service.VehicleServiceImple;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -18,6 +21,8 @@ public class SearchPage {
 	private JFrame frame;
 
 	private JPanel dealerPanel;
+
+	private JButton backButton;
 	private JLabel lblDealerResult;
 	private JTextField dealerResultTF;
 	private JLabel lblDealerID;
@@ -36,8 +41,6 @@ public class SearchPage {
 	private JLabel lblYear;
 	private JComboBox cbYearMin;
 	private JComboBox cbYearMax;
-	private JLabel lblMile;
-	private JComboBox cbMileage;
 	private JButton btnSearch;
 	private JButton btnCancel;
 	private JPanel sortPanel;
@@ -46,134 +49,115 @@ public class SearchPage {
 	private JButton btnPriceLowest;
 	private JButton btnPriceHighest;
 	private JPanel resultPanel;
+
+	private JCheckBox ascendPrice;
+	private JCheckBox descendPrice;
+	private JCheckBox ascendYear;
+	private JCheckBox descendYear;
+	private JCheckBox defaultOrder;
+
 	private OperatorListener operatorListener;
+
+	Filter f;
+	Sorting s;
+	Paging p;
 
 
 	// table
-    //	private JPanel result;
 	private JScrollPane tableScrollPane;
 	private JTable vehiclesAfterFilter;
 	Object[][] vehicleRow;
 
 	String dealerID;
 	//  vehicles of the dealer
-	ArrayList<Vehicle> vehicles;
+//	ArrayList<Vehicle> vehicles = findVehicleOfDealer(dealerID);
 
 
 	public SearchPage(String dealerID) {
+
 		this.dealerID = dealerID;
 		createComponents();
 		createListeners();
 		addListeners();
-
+		backPage();
+		addComponents();
+		setBounds();
+		setBackground();
+		setLayout();
+		makeItVisible();
 
 	}
 
 	
-	
-	
 	private void createComponents() {
+
 		frame = new JFrame();
-		frame.setBounds(100, 100, 900, 700);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		//panel for dealer
+
 		dealerPanel = new JPanel();
-		dealerPanel.setBackground(new Color(0, 191, 255));
-		dealerPanel.setForeground(Color.BLACK);
-		dealerPanel.setBounds(18, 6, 862, 27);
-		frame.getContentPane().add(dealerPanel);
-		dealerPanel.setLayout(null);
-		
-		
+
+		backButton=new JButton("BACK");
+
 		lblDealerResult = new JLabel("Results from:");
-		lblDealerResult.setBounds(152, 6, 93, 16);
-		dealerPanel.add(lblDealerResult);
-		
+
 		dealerResultTF = new JTextField();
-		dealerResultTF.setBounds(257, 3, 110, 21);
-		dealerPanel.add(dealerResultTF);
+
 		dealerResultTF.setColumns(10);
 		
 		lblDealerID = new JLabel("ID:");
-		lblDealerID.setBounds(390, 6, 24, 16);
-		dealerPanel.add(lblDealerID);
 		
 		dealerIdTF = new JTextField();
-		dealerIdTF.setBounds(414, 1, 130, 26);
-		dealerPanel.add(dealerIdTF);
+
 		dealerIdTF.setColumns(10);
-		
-		
+
 		// panel for search
 		Image searchImage = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/searchBackGround.jpg").getImage();
-		frame.getContentPane().setLayout(null);
+
 		searchPanel = new BackgroundPanel(searchImage);
-		searchPanel.setBounds(18, 41, 862, 128);
-		frame.getContentPane().add(searchPanel);
-		searchPanel.setLayout(null);
+
 		searchButton = new JButton("Search");
-		searchButton.setBounds(475, 57, 123, 36);
-		searchPanel.add(searchButton);
+
 		searchTF = new JTextField();
-		searchTF.setBounds(238, 60, 189, 26);
-		searchPanel.add(searchTF);
+
 		searchTF.setColumns(10);
-		
-		
+
 		//panel for filter
 		Image filterImage = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/filterBackGround.jpg").getImage();
+
 		filterPanel = new BackgroundPanel(filterImage);
-		filterPanel.setBounds(18, 169, 862, 127);
-		frame.getContentPane().add(filterPanel);
-		filterPanel.setLayout(null);
-			
+
 		lblBrand = new JLabel("Brand:");
-		lblBrand.setForeground(Color.BLACK);
-		lblBrand.setBounds(200, 20, 45, 16);
-		filterPanel.add(lblBrand);
-
-
 
 		String[] sBrand = {"Ford","Honda","Jeep","Mazda","Nissan","Chrysler"};
 
 		cbBrand = new JComboBox(sBrand);
-		cbBrand.setSelectedIndex(-1);
-		cbBrand.setBounds(257, 18, 132, 22);
-		filterPanel.add(cbBrand);
-		
-		lblModel = new JLabel("Model:");
-		lblModel.setBounds(408, 20, 45, 16);
-		filterPanel.add(lblModel);
 
+//		for (Vehicle vehicle: vehicles) {
+//			cbBrand.addItem(vehicle.getMake());
+//		}
+
+		cbBrand.setSelectedIndex(-1);
+
+		lblModel = new JLabel("Model:");
 
 		cbModel = new JComboBox();
-		cbModel.setBounds(465, 18, 132, 22);
-		filterPanel.add(cbModel);
-		
-		
-		
+
 		lblPrice = new JLabel("Price:");
-		lblPrice.setBounds(120, 48, 45, 16);
-		filterPanel.add(lblPrice);
 
 		String[] sPrice = {"10000","20000","30000","40000"};
-		cbPriceMin = new JComboBox(sPrice);
-		cbPriceMin.setSelectedIndex(-1);
-		cbPriceMin.setBounds(157, 46, 90, 22);
-		cbPriceMax =  new JComboBox(sPrice);
-		cbPriceMax.setSelectedIndex(-1);
-		cbPriceMax.setBounds(267, 46, 90, 22);
 
-		filterPanel.add(cbPriceMin);
-		filterPanel.add(cbPriceMax);
-		
+		cbPriceMin = new JComboBox(sPrice);
+
+		cbPriceMin.setSelectedIndex(-1);
+
+		cbPriceMax =  new JComboBox(sPrice);
+
+		cbPriceMax.setSelectedIndex(-1);
 		
 		lblYear = new JLabel("Year:");
-		lblYear.setBounds(408, 48, 45, 16);
-		filterPanel.add(lblYear);
+
+
 		cbYearMin = new JComboBox();
+
 		cbYearMax = new JComboBox();
 
 		for (int i = 1980; i<=2018;i++) {
@@ -182,132 +166,286 @@ public class SearchPage {
 
 		}
 		cbYearMin.setSelectedIndex(-1);
-		cbYearMin.setBounds(465, 46, 90, 22);
-		cbYearMax.setSelectedIndex(-1);
-		cbYearMax.setBounds(565, 46, 90, 22);
-		filterPanel.add(cbYearMin);
-		filterPanel.add(cbYearMax);
 
-//
-//		lblMile = new JLabel("Mileage:");
-//		lblMile.setBounds(200, 88, 61, 16);
-//		filterPanel.add(lblMile);
-//		cbMileage = new JComboBox();
-//		cbMileage.setBounds(257, 86, 132, 22);
-//		filterPanel.add(cbMileage);
+		cbYearMax.setSelectedIndex(-1);
+
 		
 		btnSearch = new JButton("Search");
-		btnSearch.setBounds(690, 43, 117, 29);
-		filterPanel.add(btnSearch);
 		
 		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(690, 83, 117, 29);
-		filterPanel.add(btnCancel);
-		
+
 		//panel for sort
 		Image SortBgImage = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/sortBackGround.jpg").getImage();
+
 		sortPanel = new BackgroundPanel(SortBgImage);
-		sortPanel.setBounds(18, 295, 862, 52);
-		frame.getContentPane().add(sortPanel);
-		sortPanel.setLayout(null);
-		
+
 		lblSortBy = new JLabel("Sort by:");
-		lblSortBy.setBounds(25, 16, 61, 16);
-		sortPanel.add(lblSortBy);
+
 		btnLatest = new JButton("Latest");
-		btnLatest.setBounds(92, 11, 105, 29);
-		sortPanel.add(btnLatest);
+
 		btnPriceLowest = new JButton("Price lowest");
-		btnPriceLowest.setBounds(213, 11, 117, 29);
-		sortPanel.add(btnPriceLowest);
-		
+
 		btnPriceHighest = new JButton("Price highest");
-		btnPriceHighest.setBounds(347, 11, 117, 29);
-		sortPanel.add(btnPriceHighest);
-		
+
+
+		ascendYear = new JCheckBox("ascendYear");
+
+		descendYear = new JCheckBox("descendYear");
+
+		ascendPrice = new JCheckBox("ascendPrice");
+
+		descendPrice = new JCheckBox("descendPrice");
+
+		defaultOrder = new JCheckBox("defaultOrder");
+
 		// panel for result
 		resultPanel = new JPanel();
-		resultPanel.setBounds(18, 344, 855, 334);
-		resultPanel.setBorder(new TitledBorder(new EtchedBorder(), "Results"));
-		frame.getContentPane().add(resultPanel);
-		resultPanel.setLayout(null);
-
-		
-		frame.setTitle("Vehicle Trader");
-		frame.setVisible(true);
-		
-		
 		
 	}
-	
+
+	private void addComponents() {
+
+		//panel for dealer
+
+		frame.getContentPane().add(dealerPanel);
+
+		dealerPanel.add(backButton);
+
+		dealerPanel.add(lblDealerResult);
+
+		dealerPanel.add(dealerResultTF);
+
+		dealerPanel.add(lblDealerID);
+
+		dealerPanel.add(dealerIdTF);
+
+		// panel for search
+		frame.getContentPane().add(searchPanel);
+
+		searchPanel.add(searchButton);
+
+		searchPanel.add(searchTF);
+
+		//panel for filter
+		frame.getContentPane().add(filterPanel);
+
+		filterPanel.add(lblBrand);
+
+		filterPanel.add(cbBrand);
+
+		filterPanel.add(cbModel);
+
+		filterPanel.add(lblModel);
+
+		filterPanel.add(lblPrice);
+
+		filterPanel.add(cbPriceMin);
+
+		filterPanel.add(cbPriceMax);
+
+		filterPanel.add(lblYear);
+
+		filterPanel.add(cbYearMin);
+
+		filterPanel.add(cbYearMax);
+
+		filterPanel.add(btnSearch);
+
+		filterPanel.add(btnCancel);
+
+		frame.getContentPane().add(sortPanel);
+
+//		sortPanel.add(lblSortBy);
+//
+//		sortPanel.add(btnLatest);
+//
+//		sortPanel.add(btnPriceLowest);
+//
+//		sortPanel.add(btnPriceHighest);
+
+		sortPanel.add(ascendYear);
+
+		sortPanel.add(descendYear);
+
+		sortPanel.add(ascendPrice);
+		sortPanel.add(descendPrice);
+		sortPanel.add(defaultOrder);
+
+		frame.getContentPane().add(resultPanel);
+
+	}
+
+	private void setBounds() {
+
+		frame.setBounds(100, 100, 900, 700);
+
+		dealerPanel.setBounds(18, 6, 862, 27);
+
+		backButton.setBounds(152, 6, 93, 16);
+
+		lblDealerResult.setBounds(152, 6, 93, 16);
+
+		dealerResultTF.setBounds(257, 3, 110, 21);
+
+		lblDealerID.setBounds(390, 6, 24, 16);
+
+		dealerIdTF.setBounds(414, 1, 130, 26);
+
+		searchPanel.setBounds(18, 41, 862, 128);
+
+		searchButton.setBounds(475, 57, 123, 36);
+
+		searchTF.setBounds(238, 60, 189, 26);
+
+		filterPanel.setBounds(18, 169, 862, 127);
+
+		lblBrand.setBounds(200, 20, 45, 16);
+
+		cbBrand.setBounds(257, 18, 132, 22);
+
+		cbModel.setBounds(465, 18, 132, 22);
+
+		lblModel.setBounds(408, 20, 45, 16);
+
+		lblPrice.setBounds(120, 48, 45, 16);
+
+		cbPriceMin.setBounds(157, 46, 90, 22);
+
+		cbPriceMax.setBounds(267, 46, 90, 22);
+
+		lblYear.setBounds(408, 48, 45, 16);
+
+		cbYearMin.setBounds(465, 46, 90, 22);
+
+		cbYearMax.setBounds(565, 46, 90, 22);
+
+		btnSearch.setBounds(690, 43, 117, 29);
+
+		btnCancel.setBounds(690, 83, 117, 29);
+
+		sortPanel.setBounds(18, 295, 862, 52);
+
+		lblSortBy.setBounds(25, 16, 61, 16);
+
+		btnLatest.setBounds(92, 11, 105, 29);
+
+		btnPriceLowest.setBounds(213, 11, 117, 29);
+
+		btnPriceHighest.setBounds(347, 11, 117, 29);
+
+		ascendYear.setBounds(25, 16, 100, 16);
+
+		descendYear.setBounds(175, 16, 100, 16);
+
+		ascendPrice.setBounds(325, 16, 100, 16);
+
+		descendPrice.setBounds(475, 16, 100, 16);
+
+		defaultOrder.setBounds(625, 16, 100, 16);
+
+		resultPanel.setBounds(18, 344, 855, 334);
 
 
-//	public ArrayList<Vehicle> findVehicleOfDealer(String dealerID) {
-//		VehicleServiceImple vehicleService = new VehicleServiceImple();
-//		vehicles = (ArrayList<Vehicle>) vehicleService.findVehiclesByDealer(dealerID).getVehicles();
-//		return vehicles;
-//	}
+
+		resultPanel.setBorder(new TitledBorder(new EtchedBorder(), "Results"));
+
+	}
+
+	private void setBackground() {
+
+		dealerPanel.setBackground(new Color(0, 191, 255));
+
+	}
+
+	private void setLayout() {
+
+		dealerPanel.setLayout(null);
+		searchPanel.setLayout(null);
+		filterPanel.setLayout(null);
+		sortPanel.setLayout(null);
+		resultPanel.setLayout(null);
+		frame.getContentPane().setLayout(null);
+
+	}
+
+	private void makeItVisible() {
+		frame.setTitle("Vehicle Trader");
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	}
+
+	public ArrayList<Vehicle> findVehicleOfDealer(String dealerID) {
+		VehicleServiceImple vehicleService = new VehicleServiceImple();
+		ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) vehicleService.findVehiclesByDealer(dealerID).getVehicles();
+		return vehicles;
+	}
 
 
 	private ArrayList<Vehicle> getVehicleByFilter() {
 		VehicleServiceImple vehicleService = new VehicleServiceImple();
+
 		ArrayList<Vehicle> vehicles = new ArrayList<>();
 
-
-
-
-
-		Filter f = new Filter();
+		f = new Filter();
 
 		if (cbPriceMin.getSelectedItem() != null) {
 			String priceMin = (String) cbPriceMin.getSelectedItem();
+			System.out.println("this is" + priceMin);
 			f.setMinPrice(priceMin);
 		}
 
 		if (cbPriceMax.getSelectedItem() != null) {
 			String priceMax = (String) cbPriceMax.getSelectedItem();
+			System.out.println("this is "+priceMax);
 			f.setMaxPrice(priceMax);
 		}
 
 		if (cbYearMin.getSelectedItem() != null) {
 			String yearMin = (String) cbYearMin.getSelectedItem();
+			System.out.println("this is " + yearMin);
 			f.setMinYear(yearMin);
 
 		}
 
 		if (cbYearMax.getSelectedItem() != null) {
 			String yearMax = (String) cbYearMax.getSelectedItem();
+			System.out.println("this is " + yearMax);
 			f.setMaxYear(yearMax);
+		}
 
+		if (cbBrand.getSelectedItem() != null) {
+			String brand = (String) cbBrand.getSelectedItem();
+			f.setMake(brand);
 		}
 
 
-
-
-
-		Sorting s = Sorting.ASCEND_PRICE;
-		Paging p = new Paging();
+//		s = Sorting.ASCEND_PRICE;
+		if (s == null) {
+			s = Sorting.DEFAULT;
+		}
+		p = new Paging();
 		p.setPageNum(1);
 		p.setPerPage(Integer.MAX_VALUE);
+
+		System.out.println("the file is   "+ f.getMinPrice());
 
 		for (Vehicle vehicle : vehicleService.findVehiclesByFilter(dealerID, f, s, p).getVehicles()) {
 			vehicles.add(vehicle);
 		}
-//        for (Vehicle vehicle : vehicleService.findVehiclesByDealer("gmps-curry").getVehicles()) {
-//            vehicles.add(vehicle);
-//        }
+
 
 		return vehicles;
 	}
 
 
 	private void createVehiclesTable(Object[][] vehicleRow) {
-//		JPanel result = new JPanel();
 		tableScrollPane = new JScrollPane();
+//		tableScrollPane.setBounds(100,100,300,200);
+		//DefaultTableModel tableModel = new DefaultTableModel();
 		vehiclesAfterFilter = new JTable();
-		System.out.println(vehicleRow.length);
 
-		vehiclesAfterFilter.setModel(new javax.swing.table.DefaultTableModel(
+		vehiclesAfterFilter.setModel(new DefaultTableModel(
 				vehicleRow,
 				new String[]{
 						"id", "webId", "category", "year", "make", "model", "bodyType", "price", "photoUrl"
@@ -331,6 +469,7 @@ public class SearchPage {
 
 		ArrayList<Vehicle> vehicleList = getVehicleByFilter();
 
+
 		vehicleRow = new Object[vehicleList.size()][10];
 		for (int i = 0; i < vehicleList.size(); i++) {
 			Vehicle vehicle = vehicleList.get(i);
@@ -350,11 +489,11 @@ public class SearchPage {
 	}
 
 
+
 	private GroupLayout setTabelLayout(JPanel resultPanel) {
 		GroupLayout resultLayout = new GroupLayout(resultPanel);
 		resultPanel.setLayout(resultLayout);
 		setHorizontalAndVerticalGroup(resultLayout);
-//        setContentPaneLayout();
 		return resultLayout;
 	}
 
@@ -370,11 +509,34 @@ public class SearchPage {
 				resultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, resultLayout.createSequentialGroup()
 								.addContainerGap(29, Short.MAX_VALUE)
-								.addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(tableScrollPane, 200, 300, 300)
 								.addGap(17, 17, 17))
 		);
 	}
 
+	private void showResults() {
+
+		resultPanel.removeAll();
+
+		vehicleRow = getVehicleRow();
+
+		createVehiclesTable(vehicleRow);
+
+		setTabelLayout(resultPanel);
+
+	}
+
+	public void backPage(){
+		event e = new event();//互相调用
+		backButton.addActionListener(e);
+	}
+
+	public class event implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			frame.dispose();
+			new DealerPage();
+		}
+	}
 
 
 	
@@ -382,20 +544,45 @@ public class SearchPage {
 	
 		new SearchPage("gmps-curry");
 
-		
 	}
 
 	private void createListeners() {
-		operatorListener = new OperatorListener();
 
+		operatorListener = new OperatorListener();
 	}
 
 	private void addListeners() {
+
 		btnSearch.addActionListener(operatorListener);
+		GetSort getSort = new GetSort();
+		descendYear.addItemListener(getSort);
+		ascendYear.addItemListener(getSort);
+		descendPrice.addItemListener(getSort);
+		ascendPrice.addItemListener(getSort);
+		defaultOrder.addItemListener(getSort);
 
 	}
 
+	class GetSort implements ItemListener {
 
+		@Override
+		public void itemStateChanged(ItemEvent event) {
+			if(ascendYear.isSelected()&&(descendYear.isSelected()==false)&&(descendPrice.isSelected()==false)&&(ascendPrice.isSelected()==false)&&(defaultOrder.isSelected()==false))
+				s = Sorting.ASCEND_YEAR;
+			else if(descendYear.isSelected()&&(ascendYear.isSelected()==false)&&(descendPrice.isSelected()==false)&&(ascendPrice.isSelected()==false)&&(defaultOrder.isSelected()==false))
+				s = Sorting.DESCEND_YEAR;
+			else if(ascendPrice.isSelected()&&(ascendYear.isSelected()==false)&&(descendYear.isSelected()==false)&&(descendPrice.isSelected()==false)&&(defaultOrder.isSelected()==false))
+				s = Sorting.ASCEND_PRICE;
+			else if(descendPrice.isSelected()&&(ascendYear.isSelected()==false)&&(descendYear.isSelected()==false)&&(ascendPrice.isSelected()==false)&&(defaultOrder.isSelected()==false))
+				s = Sorting.DESCEND_PRICE;
+			else if(defaultOrder.isSelected()&&(ascendYear.isSelected()==false)&&(descendYear.isSelected()==false)&&(descendPrice.isSelected()==false)&&(ascendPrice.isSelected()==false))
+				s = Sorting.DEFAULT;
+			else{
+				s = Sorting.DEFAULT;
+			}
+		}
+
+	}
 	
 	class BackgroundPanel extends JPanel {
 		private Image image = null;
@@ -408,19 +595,14 @@ public class SearchPage {
 	}
 
 
-
 	class OperatorListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			Object o = ae.getSource();
 			if (o == btnSearch) {
-
-
-				vehicleRow = getVehicleRow();
-
-				createVehiclesTable(vehicleRow);
-				setTabelLayout(resultPanel);
+				System.out.println("this");
+				showResults();
 
 			}
 //			if (o == btnCancel) {
