@@ -89,7 +89,7 @@ public class VehicleManagerImple implements VehicleManager {
 
     private boolean categoryFilter(Vehicle vehicle, List<String> categoryList) {
 
-        if (categoryList == null)
+        if (categoryList == null || categoryList.isEmpty())
             return true;
 
         for (String s : categoryList) {
@@ -102,7 +102,7 @@ public class VehicleManagerImple implements VehicleManager {
 
     private boolean typeFilter(Vehicle vehicle, List<String> typeList) {
 
-        if (typeList == null)
+        if (typeList == null || typeList.isEmpty())
             return true;
 
         for (String s : typeList) {
