@@ -60,7 +60,7 @@ public class VehicleManagerImple implements VehicleManager {
             return true;
 
         for (String s : search.toLowerCase().split(" +")) {
-            if (!vehicle.toSearchString().toLowerCase().contains(s))
+            if (!vehicle.toSearchString().toLowerCase().contains(s) || s.contains("~"))
                 return false;
         }
 
