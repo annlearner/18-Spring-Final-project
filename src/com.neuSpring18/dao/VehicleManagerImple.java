@@ -127,10 +127,10 @@ public class VehicleManagerImple implements VehicleManager {
     }
 
     @Override
-    public InventoryContext getContext(String dealerID) {
+    public InventoryContext getContext(String dealerID, Filter filter) {
 
         InventoryContext ic = new InventoryContext();
-        Collection<Vehicle> vehicles = new ArrayList<>(getVehiclesFromDealer(dealerID));
+        Collection<Vehicle> vehicles = new ArrayList<>(searchVehiclesByFilter(dealerID, filter));
         ic.setTotalCount(vehicles.size());
 
         HashSet<String> makeSet = new HashSet<>();
