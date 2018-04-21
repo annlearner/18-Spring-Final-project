@@ -552,11 +552,11 @@ public class SearchPage {
 
 
 	
-//	public static void main(String[] args) {
-//
-//		new SearchPage("gmps-aj-dohmann");
-//
-//	}
+	public static void main(String[] args) {
+
+		new SearchPage("gmps-aj-dohmann");
+
+	}
 
 	private void createListeners() {
 
