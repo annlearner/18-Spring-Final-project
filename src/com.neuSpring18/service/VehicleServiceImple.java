@@ -30,62 +30,7 @@ public class VehicleServiceImple implements VehicleService {
     }
 
     private ArrayList<Vehicle> sorting(ArrayList<Vehicle> list, Sorting sorting ){
-        if (sorting.equals(ASCEND_PRICE)) {
-            Collections.sort(list, new Comparator<Vehicle>() {
-                public int compare(Vehicle v1, Vehicle v2) {
-                    if (v1.getPrice() < v2.getPrice())
-                        return -1;
-                    else if (v1.getPrice() == v2.getPrice())
-                        return 0;
-                    else
-                        return 1;
-                }
-            });
-        } else if (sorting.equals(DESCEND_PRICE)) {
-            Collections.sort(list, new Comparator<Vehicle>() {
-                public int compare(Vehicle v1, Vehicle v2) {
-                    if (v1.getPrice() < v2.getPrice())
-                        return 1;
-                    else if (v1.getPrice() == v2.getPrice())
-                        return 0;
-                    else
-                        return -1;
-                }
-            });
-        } else if (sorting.equals(ASCEND_YEAR)) {
-            Collections.sort(list, new Comparator<Vehicle>() {
-                public int compare(Vehicle v1, Vehicle v2) {
-                    if (v1.getYear() < v2.getYear())
-                        return -1;
-                    else if (v1.getYear() == v2.getYear())
-                        return 0;
-                    else
-                        return 1;
-                }
-            });
-        } else if (sorting.equals(DESCEND_YEAR)) {
-            Collections.sort(list, new Comparator<Vehicle>() {
-                public int compare(Vehicle v1, Vehicle v2) {
-                    if (v1.getYear() < v2.getYear())
-                        return 1;
-                    else if (v1.getYear() == v2.getYear())
-                        return 0;
-                    else
-                        return -1;
-                }
-            });
-        } else if (sorting.equals(DEFAULT)) {
-            Collections.sort(list, new Comparator<Vehicle>() {
-                public int compare(Vehicle v1, Vehicle v2) {
-                    if (Long.parseLong(v1.getId()) < Long.parseLong(v2.getId()))
-                        return -1;
-                    else if (Long.parseLong(v1.getId()) == Long.parseLong(v2.getId()))
-                        return 0;
-                    else
-                        return 1;
-                }
-            });
-        }
+        list.sort(sorting.getSorter());
         return list;
     }
 
