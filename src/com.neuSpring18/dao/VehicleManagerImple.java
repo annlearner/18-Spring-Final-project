@@ -60,7 +60,7 @@ public class VehicleManagerImple implements VehicleManager {
             return true;
 
         for (String s : search.toLowerCase().split(" +")) {
-            if (!vehicle.toSearchString().toLowerCase().contains(s))
+            if (!vehicle.toSearchString().toLowerCase().contains(s) || s.contains("~"))
                 return false;
         }
 
@@ -89,7 +89,7 @@ public class VehicleManagerImple implements VehicleManager {
 
     private boolean categoryFilter(Vehicle vehicle, List<String> categoryList) {
 
-        if (categoryList == null)
+        if (categoryList == null || categoryList.isEmpty())
             return true;
 
         for (String s : categoryList) {
@@ -102,7 +102,7 @@ public class VehicleManagerImple implements VehicleManager {
 
     private boolean typeFilter(Vehicle vehicle, List<String> typeList) {
 
-        if (typeList == null)
+        if (typeList == null || typeList.isEmpty())
             return true;
 
         for (String s : typeList) {
@@ -127,10 +127,10 @@ public class VehicleManagerImple implements VehicleManager {
     }
 
     @Override
-    public InventoryContext getContext(String dealerID) {
+    public InventoryContext getContext(String dealerID, Filter filter) {
 
         InventoryContext ic = new InventoryContext();
-        Collection<Vehicle> vehicles = new ArrayList<>(getVehiclesFromDealer(dealerID));
+        Collection<Vehicle> vehicles = new ArrayList<>(searchVehiclesByFilter(dealerID, filter));
         ic.setTotalCount(vehicles.size());
 
         HashSet<String> makeSet = new HashSet<>();

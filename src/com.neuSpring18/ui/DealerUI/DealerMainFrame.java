@@ -9,15 +9,11 @@ import com.neuSpring18.service.VehicleServiceImple;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,8 +37,10 @@ public class DealerMainFrame extends DealerCommonFrame {
     private JCheckBox carBox, suvBox, truckBox, otherBox;
     private JCheckBox newBox, usedBox, preownedBox;
 
-    JScrollPane scrollPane;
-    JPanel resultPanel;
+    private JScrollPane scrollPane;
+    private JPanel resultPanel;
+    JPanel pagePanel;
+
 
     private String dealerName;
 
@@ -50,34 +48,61 @@ public class DealerMainFrame extends DealerCommonFrame {
 
     private Container c = getContentPane();
 
+    private ArrayList<String> category = new ArrayList<>();
+    private ArrayList<String> type = new ArrayList<>();
 
     private int pageNum;
-
-    Filter filter = new Filter();
+    private Filter filter;
 
     private ItemListener checkBoxListener;
-    private ActionListener textFieldListener;
-    private DocumentListener inputValidationListener;
     private ActionListener buttonListener;
 
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    private int totalPages;
+
+
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
+    }
+
+
+
     DealerMainFrame(String dealerName){
-        try {
             this.dealerName = dealerName;
+            this.pageNum = 1;
+            this.filter = new Filter();
             createComponents();
-            setLayout();
             addComponents();
             createListeners();
             addListeners();
             makeItVisible();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
 
     }
 
+
     private void addListeners() {
         addCheckBoxListeners();
-        addTextFieldListeners();
         addButtonLister();
     }
 
@@ -86,14 +111,7 @@ public class DealerMainFrame extends DealerCommonFrame {
         prePageButton.addActionListener(buttonListener);
         nextPageButton.addActionListener(buttonListener);
         jumpPageButton.addActionListener(buttonListener);
-    }
-
-    private void addTextFieldListeners(){
-        yearStartText.addActionListener(textFieldListener);
-        yearEndText.addActionListener(textFieldListener);
-
-        priceStartText.addActionListener(textFieldListener);
-        priceEndText.addActionListener(textFieldListener);
+        addButton.addActionListener(buttonListener);
     }
 
     private void addCheckBoxListeners(){
@@ -108,88 +126,72 @@ public class DealerMainFrame extends DealerCommonFrame {
 
     private void createListeners() {
         checkBoxListener = new CheckBoxListener();
-        textFieldListener = new TextFieldListener();
         buttonListener = new ButtonListener();
     }
 
-    class TextFieldListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String minYear = "";
-            String maxYear = "";
-            String minPrice = "";
-            String maxPrice = "";
-            String search = "";
-
-            Object source = e.getSource();
-            if(source == yearStartText){
-                String input = yearStartText.getText();
-                minYear = input == null || input.isEmpty() ? "" : input;
-            }
-            if(source == yearEndText){
-                String input = yearEndText.getText();
-                maxYear = input == null || input.isEmpty() ? "" : input;
-            }
-            if(source == priceStartText){
-                String input = priceStartText.getText();
-                minPrice = input == null || input.isEmpty() ? "" : input;
-            }
-            if(source == priceEndText){
-                String input = priceEndText.getText();
-                maxPrice = input == null || input.isEmpty() ? "" : input;
-            }
-            if(source == searchText){
-                String input = searchText.getText();
-                search = input == null || input.isEmpty() ? "" : input;
-            }
-//            if(source == pageNumText){
-//                String input = pageNumText.getText();
-//                setPageNum(input == null || input.isEmpty() ? 1 : Integer.parseInt(input));
-//            }
-
-            filter.setMinYear(minYear);
-            filter.setMaxYear(maxYear);
-            filter.setMinPrice(minPrice);
-            filter.setMaxPrice(maxPrice);
-            filter.setSearch(search);
-        }
-    }
 
     class CheckBoxListener implements ItemListener {
 
         @Override
         public void itemStateChanged(ItemEvent e) {
             Object source = e.getSource();
-            ArrayList<String> category = new ArrayList<>();
-            ArrayList<String> type = new ArrayList<>();
-
             if(source == newBox){
-                category.add("new");
+                if(newBox.isSelected())
+                    category.add("new");
+                else
+                    category.remove("new");
             }
             if(source == usedBox){
-                category.add("used");
+                if(usedBox.isSelected())
+                    category.add("used");
+                else
+                    category.remove("used");
             }
             if(source == preownedBox){
-                category.add("preowned");
+                if(preownedBox.isSelected())
+                    category.add("certified");
+                else
+                    category.remove("certified");
             }
+
             if(source == carBox){
-                type.add("car");
+                if(carBox.isSelected())
+                    type.add("CAR");
+                else
+                    type.remove("CAR");
             }
             if(source == suvBox){
-                type.add("suv");
+                if(suvBox.isSelected())
+                    type.add("SUV");
+                else
+                    type.remove("SUV");
             }
             if(source == truckBox){
-                type.add("truck");
+                if(truckBox.isSelected())
+                    type.add("TRUCK");
+                else
+                    type.remove("TRUCK");
             }
             if(source == otherBox){
-                type.add("other");
+                if(otherBox.isSelected()) {
+                    type.add("CARGOVAN");
+                    type.add("COMMERCIALVEHICLE");
+                    type.add("VAN");
+                    type.add("WAGON");
+                }
+                else {
+                    type.remove("CARGOVAN");
+                    type.remove("COMMERCIALVEHICLE");
+                    type.remove("VAN");
+                    type.remove("WAGON");
+                }
             }
-            filter.setCategory(category);
-            filter.setType(type);
+
         }
 
     }
+
+
 
     class ButtonListener implements ActionListener{
 
@@ -199,10 +201,19 @@ public class DealerMainFrame extends DealerCommonFrame {
 
             if(source == goButton){
                 setPageNum(1);
-                refreshResult(c, getPageNum(), filter);
+                filter.setCategory(category);
+                filter.setType(type);
+                getTextFields();
+                refreshResult(c, getPageNum(), getFilter());
+
+
+                System.out.println("Total Pages are: "+getTotalPages());
+                updateTotalPages();
+
+
             }
             if (source == nextPageButton){
-                refreshResult(c, getPageNum() + 1, filter);
+                refreshResult(c, getPageNum() + 1, getFilter());
                 setPageNum(getPageNum() + 1);
             }
             if (source == prePageButton){
@@ -211,20 +222,53 @@ public class DealerMainFrame extends DealerCommonFrame {
                 }else {
                     setPageNum(getPageNum() - 1);
                 }
-                refreshResult(c, getPageNum(), filter);
+                refreshResult(c, getPageNum(), getFilter());
             }
             if(source == jumpPageButton){
                 String input = pageNumText.getText();
                 setPageNum(input == null || input.isEmpty() ? 1 : Integer.parseInt(input));
-                refreshResult(c, getPageNum(), filter);
+                refreshResult(c, getPageNum(), getFilter());
+            }
+            if (source==addButton){
+                try {
+                    new DealerEdit();
+
+                }catch (IOException io){
+                    io.printStackTrace();
+                }catch (InterruptedException ie){
+                    ie.printStackTrace();
+                }
             }
 
         }
     }
 
+    private void getTextFields(){
+
+        String a = yearStartText.getText();
+        String minYear = a == null || a.isEmpty() ? "" : a;
+
+        String b = yearEndText.getText();
+        String maxYear = b == null || b.isEmpty() ? "" : b;
+
+        String c = priceStartText.getText();
+        String minPrice = c == null || c.isEmpty() ? "" : c;
+
+        String d = priceEndText.getText();
+        String maxPrice = d == null || d.isEmpty() ? "" : d;
+        String e = searchText.getText();
+        String search = e == null || e.isEmpty() ? "" : e;
+
+        filter.setMinYear(minYear);
+        filter.setMaxYear(maxYear);
+        filter.setMinPrice(minPrice);
+        filter.setMaxPrice(maxPrice);
+        filter.setSearch(search);
+    }
+
     private void refreshResult(Container c, int pageNum, Filter filter){
         resultPanel.removeAll();
-        addResultsPanel(c, pageNum, filter);
+        addResultsPanel(c, pageNum);
         resultPanel.revalidate();
     }
 
@@ -235,21 +279,12 @@ public class DealerMainFrame extends DealerCommonFrame {
 //        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //    }
 
-    private void addComponents() throws IOException {
+    private void addComponents() {
         addFilterPanel(c);
         addTopPanel(c);
         addPageOperatorPanel(c);
-        addResultsPanel(c, 1, filter);
+        addResultsPanel(c, 1);
     }
-
-    public int getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(int pageNum) {
-        this.pageNum = pageNum;
-    }
-
 
     class SingleResultPanel extends JPanel implements ActionListener{
         private JButton carButton;
@@ -282,7 +317,6 @@ public class DealerMainFrame extends DealerCommonFrame {
             this.labelResultPanel = createLabelResultPanel(vehicle.getModel(), vehicle.getPrice(), vehicle.getBodyType().toString());
             this.singleResultPanel = new JPanel();
             this.singleResultPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-            //this.buttonName=vehicle.getModel();
             this.vehicle = vehicle;
 
             Image image;
@@ -314,16 +348,12 @@ public class DealerMainFrame extends DealerCommonFrame {
 
             new DealerEdit(vehicle);
 
-
         }
     }
 
 
+    private void addResultsPanel(Container c, int pageNum/*, Filter filter*/) {
 
-
-    private void addResultsPanel(Container c, int pageNum, Filter filter) {
-
-        resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
         ArrayList<SingleResultPanel> singleResultPanels = new ArrayList<>();
 
         vs = new VehicleServiceImple();
@@ -333,9 +363,18 @@ public class DealerMainFrame extends DealerCommonFrame {
         p.setPageNum(pageNum);
         p.setPerPage(10);
 
+        System.out.println("--------------------");
+
+
+        int totalPages = (vs.findVehiclesByFilter(dealerName, filter, s, p).getIc().getTotalCount()) / 10;
+        System.out.println("Total Cars:"+vs.findVehiclesByFilter(dealerName,filter,s,p).getIc().getTotalCount());
+        setTotalPages(totalPages);
+
         for (Vehicle vehicle : vs.findVehiclesByFilter(dealerName, filter, s, p).getVehicles()) {
             try {
                 singleResultPanels.add(new SingleResultPanel(vehicle));
+                System.out.println(vehicle);
+                System.out.println(filter.getCategory());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -345,13 +384,22 @@ public class DealerMainFrame extends DealerCommonFrame {
             resultPanel.add(sr.getSingleResultPanel());
         }
 
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         c.add(scrollPane, BorderLayout.CENTER);
 
     }
 
+    private void updateTotalPages(){
+
+        pagePanel.removeAll();
+        createPageComponents(getTotalPages());
+        addPageOperatorPanel(c);
+        pagePanel.revalidate();
+
+    }
+
     private void addPageOperatorPanel(Container c){
-        JPanel pagePanel = new JPanel();
+
+        pagePanel = new JPanel();
         pagePanel.setLayout(new BoxLayout(pagePanel, BoxLayout.X_AXIS));
         pagePanel.add(totalPagesLabel);
         pagePanel.add(prePageButton);
@@ -381,6 +429,8 @@ public class DealerMainFrame extends DealerCommonFrame {
     }
 
     private void addFilterPanel(Container c) {
+        filter = new Filter();
+
         JPanel filterPanel = new JPanel();
         filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
         filterPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -437,7 +487,11 @@ public class DealerMainFrame extends DealerCommonFrame {
 
     private void createComponents() {
         resultPanel = new JPanel();
+        resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
+
         scrollPane = new JScrollPane(resultPanel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
         createButtons();
         createTextArea();
         createPriceProperty();
@@ -445,7 +499,7 @@ public class DealerMainFrame extends DealerCommonFrame {
         createLabels();
         createCategoryBox();
         createTypeBox();
-        createPageComponents(6);
+        createPageComponents(totalPages);
     }
 
     private void createTextArea(){
@@ -501,11 +555,8 @@ public class DealerMainFrame extends DealerCommonFrame {
         pageNumText = new JTextField(5);
         pageNumText.setMaximumSize(new Dimension(100, pageNumText.getPreferredSize().height));
 
-        String stupidSpace = "                                                                           ";
+        String stupidSpace = "                                                               ";
         totalPagesLabel = new JLabel(stupidSpace + "Total " + totalPages + " pages");
-    }
-
-    private void setLayout(){
     }
 
     public static void main(String[] args) {

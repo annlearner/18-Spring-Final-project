@@ -1,5 +1,7 @@
 package com.neuSpring18.ui.DealerUI;
 
+import com.neuSpring18.dao.DealerManagerImple;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +14,7 @@ import java.net.URL;
 public class DealerLogin extends DealerCommonFrame {
 
     public BackgroundPanel backgroundPanel;
+    private DealerManagerImple dmi = new DealerManagerImple();
 
 
     public DealerLogin() {
@@ -70,14 +73,6 @@ public class DealerLogin extends DealerCommonFrame {
             JPanel c = new LoginPanel();
             setLayout(new GridBagLayout());
             GridBagConstraints gc = new GridBagConstraints();
-
-
-//            gc.gridx=0;
-//            gc.gridy=0;
-//            //gc.weightx=0.1;
-//            //gc.weighty=0.1;
-//            add(welcome,gc);
-
             gc.gridx=0;
             gc.gridy=2;
             add(c,gc);
@@ -88,13 +83,13 @@ public class DealerLogin extends DealerCommonFrame {
     class LoginPanel extends JPanel{
 
         private JLabel user_no;
-        private JLabel password;
+        private JLabel passwordLb;
         private JButton btn_login ;
         private JButton btn_exit;
         private JTextField usernameField ;
         private JPasswordField passwordField ;
         private ButtonListener loginPageButtonListener;
-        String passwordFromField;
+        String password,id;
 
 
 
@@ -127,17 +122,14 @@ public class DealerLogin extends DealerCommonFrame {
                 Object o = e.getSource();
                 if (o==btn_login) {
 
-                    passwordFromField = new String(passwordField.getPassword());
-                    String dealerName = usernameField.getText();
-                    if (dealerName.equals("gmps-curry")&& passwordFromField.equals("HQ1234567") ){
+                    password = new String(passwordField.getPassword());
+                    id = usernameField.getText();
 
-                        //logic for checking password and username
-
+                    if (dmi.logIn(id, password) != null) {
                         dispose();
-                        new DealerMainFrame(dealerName);
-
-                    }else {
-                        JOptionPane.showMessageDialog(c,"username and password do not match");
+                        new DealerMainFrame(id);
+                    } else {
+                        JOptionPane.showMessageDialog(c, "username and passwordLb do not match");
                     }
                 }
 
@@ -153,8 +145,8 @@ public class DealerLogin extends DealerCommonFrame {
         public void createComponents(){
             user_no = new JLabel("Username : ");
             user_no.setFont(new Font("Times New Roman",Font.PLAIN,30));
-            password = new JLabel("Password : ");
-            password.setFont(new Font("Times New Roman",Font.PLAIN,30));
+            passwordLb = new JLabel("Password : ");
+            passwordLb.setFont(new Font("Times New Roman",Font.PLAIN,30));
 
             usernameField = new JTextField(18);
             usernameField.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.8f));
@@ -187,7 +179,7 @@ public class DealerLogin extends DealerCommonFrame {
 
             gc.gridx = 0;
             gc.gridy = 2;
-            add(password, gc);
+            add(passwordLb, gc);
 
             // Second column
             gc.anchor = GridBagConstraints.LINE_START;
