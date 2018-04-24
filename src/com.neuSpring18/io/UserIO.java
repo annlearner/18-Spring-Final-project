@@ -17,6 +17,7 @@ public class UserIO implements UserIOInterface {
     public List<String> getAllBasedOnMode(String mode, String filename) {
         String f=path+filename;
         File file=new File(f);
+        if(!file.exists() ||file.isDirectory()) return null;
         List<String> result = new ArrayList<>();
         try {
             br = new BufferedReader(new FileReader(file));
@@ -66,13 +67,15 @@ public class UserIO implements UserIOInterface {
     }
 
     @Override
-    public boolean addPictures(String dealerID, String picString) {
-        File file=new File(path+dealerID);
+    public boolean addPictures(String filename, String picString) {
+        File file=new File(path+filename);
         FileWriter fw=null;
+        boolean success=true;
         try {
             fw=new FileWriter(file,true);
         } catch (IOException e) {
             e.printStackTrace();
+            success=false;
         }
         if (fw != null) bw=new BufferedWriter(fw);
         if (bw != null) {
@@ -80,9 +83,10 @@ public class UserIO implements UserIOInterface {
                 pw.println(picString);
             } catch (Exception e) {
                 e.printStackTrace();
+                success=false;
             }
         }
-        return false;
+        return success;
     }
 
 
@@ -116,26 +120,25 @@ public class UserIO implements UserIOInterface {
 
     @Override
     public boolean editVehicleOfDealer(String dealerID, String vehicleID, String vehicleString) {
-        boolean success=true;
+        boolean success=false;
         String f=path+dealerID;
         File file=new File(f);
+        if(!file.exists() || file.isDirectory())return success;
+        if(!hasId(dealerID,vehicleID))return success;
         FileWriter fw = null;
         try {
             br=new BufferedReader(new FileReader(file));
             String line;
             String wholeline="";
             while((line=br.readLine())!=null) {
-                if(!line.contains(vehicleID)) {
-                    success=false;
-                    break;
-                }
-                else {
+                if(line.contains(vehicleID)) {
                     Pattern pattern=Pattern.compile("\\w.*");
                     Matcher matcher=pattern.matcher(line) ;
                     line=matcher.replaceAll(vehicleString);
                 }
                 wholeline+=line+System.lineSeparator();
             }
+            success=true;
             fw=new FileWriter(file);
             fw.write(wholeline);
         }catch(Exception e) {
@@ -155,6 +158,8 @@ public class UserIO implements UserIOInterface {
         String filepath=path+dealerID;
         String temppath=path+"Temp";
         File inputFile=new File(filepath);
+        if(!inputFile.exists() || inputFile.isDirectory())return successful;
+        if(!hasId(dealerID,vehicleID))return successful;
         File tempFile=new File(temppath);
         try {
             br=new BufferedReader(new FileReader(inputFile));
