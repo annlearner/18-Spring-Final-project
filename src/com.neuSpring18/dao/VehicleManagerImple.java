@@ -5,10 +5,7 @@ import com.neuSpring18.dto.InventoryContext;
 import com.neuSpring18.dto.Vehicle;
 import com.neuSpring18.io.UserIO;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class VehicleManagerImple implements VehicleManager {
 
@@ -31,13 +28,13 @@ public class VehicleManagerImple implements VehicleManager {
 
         if (search != null && !search.equals("")) {
 
+            HashSet<String> searchSet = searchFilter(dealerID, search);
             for (String v : vehiclesFromDealer) {
 
                 Vehicle vehicle = Vehicle.generateVehicle(v);
-                if (searchFilter(vehicle, search))
+                if (searchSet.contains(vehicle.getId()))
                     filteredVehicles.add(vehicle);
             }
-
         } else {
 
             for (String v : vehiclesFromDealer) {
@@ -54,17 +51,33 @@ public class VehicleManagerImple implements VehicleManager {
         return filteredVehicles;
     }
 
-    private boolean searchFilter(Vehicle vehicle, String search) {
+    private HashSet<String> searchFilter(String dealerID, String search) {
 
-        if (search == null || search.equals(""))
-            return true;
-
+        HashSet<String> searchSet = new HashSet<>();
+        Map<String, List<String>> searchMap = getSearchMap(dealerID);
         for (String s : search.toLowerCase().split(" +")) {
-            if (!vehicle.toSearchString().toLowerCase().contains(s) || s.contains("~"))
-                return false;
+            if (searchMap.containsKey(s)) {
+                searchSet.addAll(searchMap.get(s));
+            }
         }
 
-        return true;
+        return searchSet;
+    }
+
+    private Map<String, List<String>> getSearchMap(String dealerID) {
+
+        Map<String, List<String>> searchMap = new HashMap<>();
+        Collection<Vehicle> vehicles = getVehiclesFromDealer(dealerID);
+        for (Vehicle v : vehicles) {
+
+            for (String s : v.toSearchString().toLowerCase().split("~| +")) {
+
+                if (!searchMap.containsKey(s))
+                    searchMap.put(s, new ArrayList<>());
+                searchMap.get(s).add(v.getId());
+            }
+        }
+        return searchMap;
     }
 
     private boolean minPriceFilter(Vehicle vehicle, String minPrice) {
@@ -137,20 +150,13 @@ public class VehicleManagerImple implements VehicleManager {
         HashSet<String> typeSet = new HashSet<>();
 
         for (Vehicle v : vehicles) {
-            String make = v.getMake();
-            String type = v.getBodyType().toString();
-            addToList(makeSet, make);
-            addToList(typeSet, type);
+            makeSet.add(v.getMake());
+            typeSet.add(v.getBodyType().toString());
         }
 
         ic.setMakes(new ArrayList<>(makeSet));
         ic.setTypes(new ArrayList<>(typeSet));
         return ic;
-    }
-
-    private void addToList(HashSet<String> set, String string) {
-        if (!set.contains(string))
-            set.add(string);
     }
 
     @Override

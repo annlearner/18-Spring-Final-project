@@ -4,6 +4,8 @@ import com.neuSpring18.service.DealerService;
 import com.neuSpring18.service.DealerServiceImple;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,87 +13,46 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class DealerPage extends JFrame{
+	private JPanel contentPane;
+	//top panel
+	private JPanel topPanel;
+	private JButton Aboutus;
+	private JButton Login;
+	private JLabel  topLabel;
+	//button panel
+	private JPanel buttonPanel;
+	private JButton feedback;
+	//right panel
+	private JPanel rightPanel;
+	private JLabel rightLabel;
+	//mid panel
+	private JPanel midPanel;
 
-	private ImageIcon image;
-	private JLabel label;
-	private String[] dealerString= {"Dealer 1","Dealer 2","Dealer 3","Dealer 4","Dealer 5"};;
+	private JLabel promptLabel;
 	private JComboBox cmbDealerList;
-	private JLabel promptlabel;
-	private JButton comfirmButton;
-//	GridBagConstraints gbc = new GridBagConstraints();
-	private GridBagConstraints gbcImage = new GridBagConstraints();
-	private GridBagConstraints gbcTitle = new GridBagConstraints();
-	private GridBagConstraints gbcPromptlabel = new GridBagConstraints();
-	private GridBagConstraints gbcCmb = new GridBagConstraints();
-	private GridBagConstraints gbcConfirm = new GridBagConstraints();
-	private JLabel title=new JLabel("Dealer Choice Page");
-	DealerPage(){
-		setLayout(new GridBagLayout());
-		setLocation();
-		content();
-		combox();
-		setFont();
-		add();
+	private JButton confirmButton;
+	//leftPanel
+	private JPanel leftPanel;
+	private JLabel leftImagea;
+
+	public DealerPage(){
+
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		Top();
+		Mid();
+		Left();
+		Right();
+		Button();
 		jumpPage();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		log();
+		havefeedback();
 		setVisible(true);
-		pack();
 		setTitle("Dealer Choice Page");
-//		public void jumpPage(){
-//		event e = new event();//互相调用
-//		comfirmButton.addActionListener(e);
-//	}
-//		image = new ImageIcon(getClass().getResource("../../../../dealer.png"));
-//		label=new JLabel(image);
-//		gbc.gridx=0;
-//		gbc.gridy=2;
-
-		
-	
-//		gbc.gridx=0;
-//		gbc.gridy=0;
-//		title.setFont(new Font("",1,30));
-//		add(title, gbc);
-
-		
-//		gbc.gridx=0;
-//		gbc.gridy=5;
-//		promptlabel.setFont(new Font("",1,30));
-//		add(promptlabel,gbc);
-		
-//		gbc.gridx=0;
-//		gbc.gridy=10;
-//		cmbDealerList.setSize(200,200);
-//		cmbDealerList.setFont(new Font("",1,30));
-//		add(cmbDealerList,gbcCmb);
-		
-//		gbc.gridx=0;
-//		gbc.gridy=20;
-//		comfirmButton.setFont(new Font("",1,30));
-//		comfirmButton.setSize(100,100);
-//		add(comfirmButton,gbcConfirm);
-		
-	}
-
-	public void setLocation(){
-		gbcImage.gridx=0;
-		gbcImage.gridy=2;
-		gbcTitle.gridx=0;
-		gbcTitle.gridy=0;
-		gbcPromptlabel.gridx=0;
-		gbcPromptlabel.gridy=5;
-		gbcCmb.gridx=0;
-		gbcCmb.gridy=10;
-		gbcConfirm.gridx=0;
-		gbcConfirm.gridy=20;
-
-	}
-
-	public void content(){
-		promptlabel=new JLabel("please choose your favoriate dealer");
-		comfirmButton=new JButton("Confirm");
-		image = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/dealer.png");
-		label=new JLabel(image);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public String[] getDealerList(){
@@ -107,41 +68,137 @@ public class DealerPage extends JFrame{
 		idDisplay=idList.toArray(new String[num]);
 		return idDisplay;
 	}
+
 	public void combox(){
 
 		cmbDealerList = new JComboBox(getDealerList());
 	}
 
-	public void setFont(){
-		title.setFont(new Font("",1,30));
-		promptlabel.setFont(new Font("",1,30));
-		cmbDealerList.setSize(200,400);
-		cmbDealerList.setFont(new Font("",1,30));
-		comfirmButton.setFont(new Font("",1,30));
-		comfirmButton.setSize(100,100);
+
+	public void Top() {
+
+		Image TopImage = new ImageIcon(("src/com.neuSpring18/ui/CustomerUI/image/topDown.jpeg")).getImage();
+		topPanel=new BackgroundPanel(TopImage);
+
+		topPanel.setBounds(6, 6, 438, 21);
+		contentPane.add(topPanel);
+		topPanel.setLayout(null);
+		Aboutus=new JButton("About us");
+
+		JButton Aboutus = new JButton("About Us");
+		Aboutus.setBounds(0, 0, 96, 20);
+		topPanel.add(Aboutus);
+
+		Login = new JButton("Log In");
+		Login.setBounds(321, 0, 117, 20);
+		topPanel.add(Login);
+
 	}
 
-	public void add(){
-		add(label,gbcImage);
-		add(title, gbcTitle);
-		add(promptlabel,gbcPromptlabel);
-		add(cmbDealerList,gbcCmb);
-		add(comfirmButton,gbcConfirm);
-
+	public void Mid() {
+		//Panel
+		Image MidImage = new ImageIcon(("src/com.neuSpring18/ui/CustomerUI/image/middle.jpg")).getImage();
+		midPanel=new BackgroundPanel(MidImage);
+		midPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		midPanel.setBounds(113, 28, 201, 212);
+		contentPane.add(midPanel);
+		midPanel.setLayout(null);
+		//promptLabel
+		promptLabel = new JLabel("Select User ID");
+		promptLabel.setBounds(43, 6, 98, 16);
+		midPanel.add(promptLabel);
+		//cmb
+		combox();
+		cmbDealerList.setBounds(28, 44, 143, 27);
+		midPanel.add(cmbDealerList);
+		//confirmButton
+		confirmButton=new JButton("Confirm");
+		confirmButton.setBounds(43, 108, 98, 29);
+		midPanel.add(confirmButton);
+		//
 	}
-	public void jumpPage(){
-		event e = new event();//互相调用
-		comfirmButton.addActionListener(e);
+
+	public void Left(){
+		//Panel
+		Image leftImage= new ImageIcon(("src/com.neuSpring18/ui/CustomerUI/image/leftRight.jpg")).getImage();
+		leftPanel=new BackgroundPanel(leftImage);
+		leftPanel.setBounds(6, 28, 101, 212);
+		contentPane.add(leftPanel);
+		leftPanel.setLayout(null);
+	}
+
+	public void Right(){
+		//Panel
+		Image rightImage= new ImageIcon(("src/com.neuSpring18/ui/CustomerUI/image/leftRight.jpg")).getImage();
+		rightPanel=new BackgroundPanel(rightImage);
+		rightPanel.setBounds(319, 28, 125, 212);
+		contentPane.add(rightPanel);
+		rightPanel.setLayout(null);
+	}
+
+	public void Button(){
+		Image buttonImage=new ImageIcon(("src/com.neuSpring18/ui/CustomerUI/image/topDown.jpeg")).getImage();
+		buttonPanel=new BackgroundPanel(buttonImage);
+		buttonPanel.setBounds(6, 242, 438, 30);
+		contentPane.add(buttonPanel);
+		buttonPanel.setLayout(null);
+
+		feedback= new JButton("feedback");
+		feedback.setBounds(6, 6, 117, 29);
+		buttonPanel.add(feedback);
 	}
 	public class event implements ActionListener{
+
 		public void actionPerformed(ActionEvent e){
 			dispose();
 			new SearchPage((String)cmbDealerList.getSelectedItem());
 		}
 	}
-	
+
+	public void jumpPage(){
+		event e = new event();//互相调用
+		confirmButton.addActionListener(e);
+	}
+
+	public class register implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			new LOG();
+		}
+	}
+
+	public void log(){
+		register e = new register();
+		Login.addActionListener(e);
+	}
+
+	public void havefeedback(){
+		fb feed=new fb();
+		feedback.addActionListener(feed);
+	}
+
+	public class fb implements ActionListener{
+		public void actionPerformed(ActionEvent feed){
+			new FEEDBACK();
+		}
+	}
+
+
+
+
+
+	class BackgroundPanel extends JPanel {
+
+		private Image image = null;
+		public BackgroundPanel(Image image) {
+			this.image = image;
+		}
+		protected void paintComponent(Graphics g) {
+			g.drawImage(image, 0, 0, this.getWidth(),this.getHeight(),this);
+		}
+	}
+
 	public static void main(String args[]) {
-		DealerPage gui = new DealerPage();
+		new DealerPage();
 //		gui.setLocation();
 //		gui.content();
 //		gui.combox();
@@ -152,4 +209,6 @@ public class DealerPage extends JFrame{
 //		gui.pack();
 //		gui.setTitle("Dealer Choice Page");
 	}
+
 }
+
