@@ -35,6 +35,8 @@ public class VehicleServiceTest {
         System.out.println("3. Add a new vehicle");
         String addString = "~gmps-curry~new~2018~Heihei~Equinox~AWD LS~SUV~28195.0~http://inventory-dmg.assets-cdk.com/3/3/3/14256931333x90.jpg";
         Vehicle v = Vehicle.generateVehicle(addString);
+        v.getMorePhotos().add("/src/img/test.jpg");
+        v.getMorePhotos().add("/src/img/test2.jpg");
         String newID = vs.addVehicle("gmps-curry", v);
         System.out.println("New ID: " + newID);
 
@@ -45,9 +47,10 @@ public class VehicleServiceTest {
         System.out.println("4. Edit a vehicle");
         String editString = newID + "~gmps-curry~new~2018~Lalala~Equinox~AWD LS~SUV~28195.0~http://inventory-dmg.assets-cdk.com/3/3/3/14256931333x90.jpg";
         v = Vehicle.generateVehicle(editString);
+        v.getMorePhotos().add("/src/img/test.jpg");
         if (vs.editVehicle("gmps-curry", v)) {
             System.out.println("Edit success");
-            System.out.println(v);
+            System.out.println(v.toCompleteString());
         }
 
 

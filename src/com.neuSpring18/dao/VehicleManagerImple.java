@@ -162,18 +162,33 @@ public class VehicleManagerImple implements VehicleManager {
     @Override
     public String addVehicle(String dealerID, Vehicle v) {
         UserIO userIO = new UserIO();
-        return userIO.addVehicleToDealer(dealerID, v.toString());
+        String newID = userIO.addVehicleToDealer(dealerID, v.toString());
+        for (String s : v.getMorePhotos()) {
+            userIO.addPictures(dealerID + "-img", newID + "~" + s);
+        }
+        return newID;
     }
 
     @Override
     public boolean editVehicle(String dealerID, Vehicle v) {
         UserIO userIO = new UserIO();
-        return userIO.editVehicleOfDealer(dealerID, v.getId(), v.toString());
+        if (userIO.editVehicleOfDealer(dealerID, v.getId(), v.toString())) {
+            userIO.deleteVehicleFromDealer(dealerID + "-img", v.getId());
+            for (String s : v.getMorePhotos()) {
+                userIO.addPictures(dealerID + "-img",  v.getId() + "~" + s);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean deleteVehicle(String dealerID, String vehicleID) {
         UserIO userIO = new UserIO();
-        return userIO.deleteVehicleFromDealer(dealerID, vehicleID);
+        if (userIO.deleteVehicleFromDealer(dealerID, vehicleID)) {
+            userIO.deleteVehicleFromDealer(dealerID + "-img", vehicleID);
+            return true;
+        }
+        return false;
     }
 }
