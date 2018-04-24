@@ -48,6 +48,7 @@ public class VehicleManagerImple implements VehicleManager {
                 }
             }
         }
+        addPicturesToVehicles(filteredVehicles, dealerID);
         return filteredVehicles;
     }
 
@@ -135,6 +136,20 @@ public class VehicleManagerImple implements VehicleManager {
         Collection<Vehicle> vehicles = new ArrayList<Vehicle>();
         for (String v : vehiclesFromDealer) {
             vehicles.add(Vehicle.generateVehicle(v));
+        }
+        addPicturesToVehicles(vehicles, dealerID);
+        return vehicles;
+    }
+
+    private Collection<Vehicle> addPicturesToVehicles(Collection<Vehicle> vehicles, String dealerID) {
+        UserIO userIO = new UserIO();
+        List<String> pictures = userIO.getAllBasedOnMode("All", dealerID + "-img");
+        for (String p : pictures) {
+            String[] id = p.split("~");
+            for (Vehicle v : vehicles) {
+                if (v.getId().equals(id[0]))
+                    v.getMorePhotos().add(id[1]);
+            }
         }
         return vehicles;
     }
