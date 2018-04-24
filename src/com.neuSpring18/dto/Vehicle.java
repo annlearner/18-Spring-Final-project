@@ -2,6 +2,8 @@ package com.neuSpring18.dto;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Vehicle {
 
@@ -15,6 +17,11 @@ public class Vehicle {
     private CarType bodyType;
     private double price;
     private URL photoUrl;
+    private List<String> morePhotos;
+
+    public Vehicle() {
+        morePhotos = new ArrayList<>();
+    }
 
     public static Vehicle generateVehicle(String s) {
         Vehicle result = new Vehicle();
@@ -136,6 +143,22 @@ public class Vehicle {
         return sb.toString();
     }
 
+    public String toCompleteString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(id).append("~");
+        sb.append(webId).append("~");
+        sb.append(category).append("~");
+        sb.append(year).append("~");
+        sb.append(make).append("~");
+        sb.append(model).append("~");
+        sb.append(trim).append("~");
+        sb.append(bodyType).append("~");
+        sb.append(price).append("~");
+        sb.append(photoUrl).append("\n");
+        sb.append(morePhotos);
+        return sb.toString();
+    }
+
     public String toSearchString() {
         StringBuilder sb = new StringBuilder();
         sb.append(id).append("~");
@@ -148,5 +171,13 @@ public class Vehicle {
         sb.append(bodyType);
 //        sb.append(price);
         return sb.toString();
+    }
+
+    public List<String> getMorePhotos() {
+        return morePhotos;
+    }
+
+    public void setMorePhotos(List<String> morePhotos) {
+        this.morePhotos = morePhotos;
     }
 }
