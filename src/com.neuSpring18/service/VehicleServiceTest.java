@@ -1,3 +1,4 @@
+
 package com.neuSpring18.service;
 
 import com.neuSpring18.dto.Filter;
@@ -8,12 +9,12 @@ import com.neuSpring18.dto.Vehicle;
 public class VehicleServiceTest {
     public static void main(String[] args) {
 
-        System.out.println("1. Get All vehicles from dealer");
+            System.out.println("1. Get All vehicles from dealer");
 
-        VehicleService vs = new VehicleServiceImple();
-        for (Vehicle vehicle : vs.findVehiclesByDealer("gmps-curry").getVehicles()) {
-            System.out.println(vehicle);
-        }
+            VehicleService vs = new VehicleServiceImple();
+           for (Vehicle vehicle : vs.findVehiclesByDealer("gmps-curry").getVehicles()) {
+                System.out.println(vehicle);
+            }
 
         System.out.println("--------------");
 
@@ -28,6 +29,7 @@ public class VehicleServiceTest {
             System.out.println(vehicle);
         }
 
+
         System.out.println("--------------");
 
         System.out.println("3. Add a new vehicle");
@@ -35,6 +37,7 @@ public class VehicleServiceTest {
         Vehicle v = Vehicle.generateVehicle(addString);
         String newID = vs.addVehicle("gmps-curry", v);
         System.out.println("New ID: " + newID);
+
 
 
         System.out.println("--------------");
@@ -54,5 +57,7 @@ public class VehicleServiceTest {
         if (vs.removeVehicle("gmps-curry", newID)) {
             System.out.println("Delete success");
         }
+
     }
 }
+

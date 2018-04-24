@@ -5,6 +5,7 @@ import java.util.List;
 public interface UserIOInterface {
     List<String> getAllBasedOnMode(String mode,String Filename);//mode:ID|All
     String addVehicleToDealer(String dealerID, String vehicleString);
+    boolean addPictures(String dealerID, String picString);
     boolean editVehicleOfDealer(String dealerID,String vehicleID, String vehicleString);
     boolean deleteVehicleFromDealer(String dealerID, String vehicleID);
 }

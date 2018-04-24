@@ -1,3 +1,4 @@
+/*
 package com.neuSpring18.ui.CustomerUI;
 
 import javax.mail.*;
@@ -62,4 +63,4 @@ public class EmailUtility {
         Transport.send(msg);
 
     }
-}
+}*/

@@ -15,7 +15,8 @@ public class UserIO implements UserIOInterface {
 
     @Override
     public List<String> getAllBasedOnMode(String mode, String filename) {
-        String file=path+filename;
+        String f=path+filename;
+        File file=new File(f);
         List<String> result = new ArrayList<>();
         try {
             br = new BufferedReader(new FileReader(file));
@@ -64,6 +65,27 @@ public class UserIO implements UserIOInterface {
         return newID;
     }
 
+    @Override
+    public boolean addPictures(String dealerID, String picString) {
+        File file=new File(path+dealerID);
+        FileWriter fw=null;
+        try {
+            fw=new FileWriter(file,true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (fw != null) bw=new BufferedWriter(fw);
+        if (bw != null) {
+            try (PrintWriter pw = new PrintWriter(bw)) {
+                pw.println(picString);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+
     /**
      * Generate an ID randomly by using UUID
      * @return the ID
@@ -103,12 +125,16 @@ public class UserIO implements UserIOInterface {
             String line;
             String wholeline="";
             while((line=br.readLine())!=null) {
-                if(line.contains(vehicleID)) {
+                if(!line.contains(vehicleID)) {
+                    success=false;
+                    break;
+                }
+                else {
                     Pattern pattern=Pattern.compile("\\w.*");
                     Matcher matcher=pattern.matcher(line) ;
                     line=matcher.replaceAll(vehicleString);
                 }
-                wholeline=line+System.lineSeparator();
+                wholeline+=line+System.lineSeparator();
             }
             fw=new FileWriter(file);
             fw.write(wholeline);
