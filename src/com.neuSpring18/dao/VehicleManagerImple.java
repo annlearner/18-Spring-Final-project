@@ -142,15 +142,18 @@ public class VehicleManagerImple implements VehicleManager {
     }
 
     private Collection<Vehicle> addPicturesToVehicles(Collection<Vehicle> vehicles, String dealerID) {
+
         UserIO userIO = new UserIO();
-        List<String> pictures = userIO.getAllBasedOnMode("All", dealerID + "-img");
-        for (String p : pictures) {
-            String[] id = p.split("~");
+        List<String> pictureString = userIO.getAllBasedOnMode("All", dealerID + "-img");
+
+        for (String ps : pictureString) {
+            String[] s = ps.split("~");
             for (Vehicle v : vehicles) {
-                if (v.getId().equals(id[0]))
-                    v.getMorePhotos().add(id[1]);
+                if (v.getId().equals(s[0]))
+                    v.getMorePhotos().add(s[1]);
             }
         }
+
         return vehicles;
     }
 
