@@ -9,12 +9,12 @@ import com.neuSpring18.dto.Vehicle;
 public class VehicleServiceTest {
     public static void main(String[] args) {
 
-            System.out.println("1. Get All vehicles from dealer");
+        System.out.println("1. Get All vehicles from dealer");
 
-            VehicleService vs = new VehicleServiceImple();
-           for (Vehicle vehicle : vs.findVehiclesByDealer("gmps-curry").getVehicles()) {
-                System.out.println(vehicle);
-            }
+        VehicleService vs = new VehicleServiceImple();
+        for (Vehicle vehicle : vs.findVehiclesByDealer("gmps-curry").getVehicles()) {
+            System.out.println(vehicle.toCompleteString());
+        }
 
         System.out.println("--------------");
 
@@ -26,7 +26,7 @@ public class VehicleServiceTest {
         p.setPageNum(1);
         p.setPerPage(10);
         for (Vehicle vehicle : vs.findVehiclesByFilter("gmps-curry", f, s, p).getVehicles()) {
-            System.out.println(vehicle);
+            System.out.println(vehicle.toCompleteString());
         }
 
 
@@ -39,7 +39,6 @@ public class VehicleServiceTest {
         v.getMorePhotos().add("/src/img/test2.jpg");
         String newID = vs.addVehicle("gmps-curry", v);
         System.out.println("New ID: " + newID);
-
 
 
         System.out.println("--------------");

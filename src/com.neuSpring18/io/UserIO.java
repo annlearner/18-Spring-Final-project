@@ -17,8 +17,8 @@ public class UserIO implements UserIOInterface {
     public List<String> getAllBasedOnMode(String mode, String filename) {
         String f=path+filename;
         File file=new File(f);
-        if(!file.exists() ||file.isDirectory()) return null;
         List<String> result = new ArrayList<>();
+        if(!file.exists() ||file.isDirectory()) return result;
         try {
             br = new BufferedReader(new FileReader(file));
             String read;
