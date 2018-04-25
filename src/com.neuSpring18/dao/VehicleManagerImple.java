@@ -9,6 +9,8 @@ import java.util.*;
 
 public class VehicleManagerImple implements VehicleManager {
 
+    Map<String, Set<String>> searchMap;
+
     @Override
     public Collection<Vehicle> searchVehiclesByFilter(String dealerID, Filter filter) {
 
@@ -24,15 +26,17 @@ public class VehicleManagerImple implements VehicleManager {
         UserIO userIO = new UserIO();
         List<String> vehiclesFromDealer = userIO.getAllBasedOnMode("All", dealerID);
         vehiclesFromDealer.remove(0);
-        Collection<Vehicle> filteredVehicles = new ArrayList<Vehicle>();
+        Collection<Vehicle> filteredVehicles = new ArrayList<>();
 
-        if (search != null && !search.equals("")) {
+        if (search != null && !search.trim().equals("")) {
 
-            HashSet<String> searchSet = searchFilter(dealerID, search);
+            if (searchMap == null)
+                searchMap = getSearchMap(dealerID);
+
             for (String v : vehiclesFromDealer) {
 
                 Vehicle vehicle = Vehicle.generateVehicle(v);
-                if (searchSet.contains(vehicle.getId()))
+                if (searchFilter(vehicle, search))
                     filteredVehicles.add(vehicle);
             }
         } else {
@@ -52,29 +56,26 @@ public class VehicleManagerImple implements VehicleManager {
         return filteredVehicles;
     }
 
-    private HashSet<String> searchFilter(String dealerID, String search) {
+    private boolean searchFilter(Vehicle vehicle, String search) {
 
-        HashSet<String> searchSet = new HashSet<>();
-        Map<String, List<String>> searchMap = getSearchMap(dealerID);
-        for (String s : search.toLowerCase().split(" +")) {
-            if (searchMap.containsKey(s)) {
-                searchSet.addAll(searchMap.get(s));
-            }
+        for (String s : search.trim().toLowerCase().split(" +")) {
+            if (!searchMap.containsKey(s) || !searchMap.get(s).contains(vehicle.getId()))
+                return false;
         }
 
-        return searchSet;
+        return true;
     }
 
-    private Map<String, List<String>> getSearchMap(String dealerID) {
+    private Map<String, Set<String>> getSearchMap(String dealerID) {
 
-        Map<String, List<String>> searchMap = new HashMap<>();
+        Map<String, Set<String>> searchMap = new HashMap<>();
         Collection<Vehicle> vehicles = getVehiclesFromDealer(dealerID);
         for (Vehicle v : vehicles) {
 
             for (String s : v.toSearchString().toLowerCase().split("~| +")) {
 
                 if (!searchMap.containsKey(s))
-                    searchMap.put(s, new ArrayList<>());
+                    searchMap.put(s, new HashSet<>());
                 searchMap.get(s).add(v.getId());
             }
         }
@@ -179,6 +180,7 @@ public class VehicleManagerImple implements VehicleManager {
 
     @Override
     public String addVehicle(String dealerID, Vehicle v) {
+        searchMap = null;
         UserIO userIO = new UserIO();
         String newID = userIO.addVehicleToDealer(dealerID, v.toString());
         for (String s : v.getMorePhotos()) {
@@ -189,6 +191,7 @@ public class VehicleManagerImple implements VehicleManager {
 
     @Override
     public boolean editVehicle(String dealerID, Vehicle v) {
+        searchMap = null;
         UserIO userIO = new UserIO();
         if (userIO.editVehicleOfDealer(dealerID, v.getId(), v.toString())) {
             userIO.deleteVehicleFromDealer(dealerID + "-img", v.getId());
@@ -202,6 +205,7 @@ public class VehicleManagerImple implements VehicleManager {
 
     @Override
     public boolean deleteVehicle(String dealerID, String vehicleID) {
+        searchMap = null;
         UserIO userIO = new UserIO();
         if (userIO.deleteVehicleFromDealer(dealerID, vehicleID)) {
             userIO.deleteVehicleFromDealer(dealerID + "-img", vehicleID);
