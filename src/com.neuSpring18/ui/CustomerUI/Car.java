@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Car extends JFrame {
@@ -70,25 +69,16 @@ public class Car extends JFrame {
             e.printStackTrace();
         }
         if (icon == null) {
-            handleNullError(urlPicture, image, icon);
+            handleNullError();
         } else {
             carPicture = new JLabel(new ImageIcon(icon));
         }
 
     }
 
-    public void handleNullError(String urlPicture, BufferedImage image, Image icon) {
-        urlPicture = "http://gfi.fieci-cfecgc.org/wp-content/uploads/sites/30/2014/03/NOK.png";
-        try {
-            URL urlOnline = new URL(urlPicture);
-            image = ImageIO.read(urlOnline);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        icon = image.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
-        carPicture = new JLabel(new ImageIcon(icon));
+    public void  handleNullError() {
+        ImageIcon errImage= new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/error.jpg");
+        carPicture = new JLabel(errImage);
     }
 
     private void initBriefyInformationPanel() {

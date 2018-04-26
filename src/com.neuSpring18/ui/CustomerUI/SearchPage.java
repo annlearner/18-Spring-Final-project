@@ -69,6 +69,7 @@ public class SearchPage {
     private JButton nextPage;
     private JComboBox cbPage;
     private JButton turnPage;
+    private ButtonGroup sortButtonGroup;
     private static final int perPageNum = 6;
 
     public SearchPage(String dealerID) {
@@ -233,7 +234,8 @@ public class SearchPage {
         sortPanel.add(descendYear);
         sortPanel.add(ascendPrice);
         sortPanel.add(descendPrice);
-        ButtonGroup sortButtonGroup = new ButtonGroup();
+        sortButtonGroup = new ButtonGroup();
+
         sortButtonGroup.add(ascendYear);
         sortButtonGroup.add(descendYear);
         sortButtonGroup.add(ascendPrice);
@@ -385,10 +387,41 @@ public class SearchPage {
         vehiclesAfterFilter.getColumn("Detailed Description").setCellEditor(new ButtonEditor(new JTextField()));
     }
 
+//    public Object[][] getVehicleRow() {
+//        vehicles = getVehicleByFilter();
+//        vehicleRow = new Object[vehicles.size()][9];
+//        BufferedImage img;
+//        Image icon = null;
+//        for (int i = 0; i < vehicles.size(); i++) {
+//            Vehicle vehicle = vehicles.get(i);
+//            try {
+//                img = ImageIO.read(vehicle.getPhotoUrl());
+//                icon = img.getScaledInstance(85, 85, Image.SCALE_DEFAULT);
+//                vehicleRow[i][0]=new ImageIcon(icon);
+//            } catch (IOException e) {
+//                vehicleRow[i][0] = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/searchBackGround.jpg");
+//                urlForButton = null;
+//            }
+//            if(icon != null){
+//                urlForButton = vehicle.getPhotoUrl().toString();
+//            }
+//            vehicleRow[i][1] = vehicle.getCategory();
+//            vehicleRow[i][2] = vehicle.getYear();
+//            vehicleRow[i][3] = vehicle.getMake();
+//            vehicleRow[i][4] = vehicle.getModel();
+//            vehicleRow[i][5] = vehicle.getBodyType();
+//            vehicleRow[i][6] = vehicle.getPrice();
+//            vehicleRow[i][7] = vehicle.getPhotoUrl();
+//        }
+//        return vehicleRow;
+//    }
+
     public Object[][] getVehicleRow() {
+
         vehicles = getVehicleByFilter();
+
         vehicleRow = new Object[vehicles.size()][9];
-        BufferedImage img;
+        BufferedImage img = null;
         Image icon = null;
         for (int i = 0; i < vehicles.size(); i++) {
             Vehicle vehicle = vehicles.get(i);
@@ -397,12 +430,14 @@ public class SearchPage {
                 icon = img.getScaledInstance(85, 85, Image.SCALE_DEFAULT);
                 vehicleRow[i][0]=new ImageIcon(icon);
             } catch (IOException e) {
-                vehicleRow[i][0] = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/searchBackGround.jpg");
+                vehicleRow[i][0] = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/errorPicture.jpg");
                 urlForButton = null;
             }
             if(icon != null){
                 urlForButton = vehicle.getPhotoUrl().toString();
             }
+
+
             vehicleRow[i][1] = vehicle.getCategory();
             vehicleRow[i][2] = vehicle.getYear();
             vehicleRow[i][3] = vehicle.getMake();
@@ -410,6 +445,7 @@ public class SearchPage {
             vehicleRow[i][5] = vehicle.getBodyType();
             vehicleRow[i][6] = vehicle.getPrice();
             vehicleRow[i][7] = vehicle.getPhotoUrl();
+
         }
         return vehicleRow;
     }
@@ -575,6 +611,7 @@ public class SearchPage {
                 cbPriceMin.setSelectedIndex(-1);
                 cbYearMax.setSelectedIndex(-1);
                 cbYearMin.setSelectedIndex(-1);
+                sortButtonGroup.clearSelection();
             }
             if (o == previousPage) {
                 int curPage = p.getPageNum();
