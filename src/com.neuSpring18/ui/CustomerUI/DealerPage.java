@@ -36,23 +36,34 @@ public class DealerPage extends JFrame{
 	private JLabel leftImagea;
 
 	public DealerPage(){
+		basicOperation();
+		panelSettings();
+		pageSwitches();
+		setVisible(true);
+		setTitle("Dealer Choice Page");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 
+	public void basicOperation(){
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		Top();
-		Mid();
-		Left();
-		Right();
-		Button();
+	}
+
+	public void pageSwitches(){
 		jumpPage();
 		log();
 		havefeedback();
-		setVisible(true);
-		setTitle("Dealer Choice Page");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public void panelSettings(){
+		designTop();
+		designMid();
+		designLeft();
+		designRight();
+		designButtom();
 	}
 
 	public String[] getDealerList(){
@@ -75,7 +86,7 @@ public class DealerPage extends JFrame{
 	}
 
 
-	public void Top() {
+	public void designTop() {
 
 		Image TopImage = new ImageIcon(("src/com.neuSpring18/ui/CustomerUI/image/topDown.jpeg")).getImage();
 		topPanel=new BackgroundPanel(TopImage);
@@ -95,7 +106,7 @@ public class DealerPage extends JFrame{
 
 	}
 
-	public void Mid() {
+	public void designMid() {
 		//Panel
 		Image MidImage = new ImageIcon(("src/com.neuSpring18/ui/CustomerUI/image/middle.jpg")).getImage();
 		midPanel=new BackgroundPanel(MidImage);
@@ -115,10 +126,9 @@ public class DealerPage extends JFrame{
 		confirmButton=new JButton("Confirm");
 		confirmButton.setBounds(43, 108, 98, 29);
 		midPanel.add(confirmButton);
-		//
 	}
 
-	public void Left(){
+	public void designLeft(){
 		//Panel
 		Image leftImage= new ImageIcon(("src/com.neuSpring18/ui/CustomerUI/image/leftRight.jpg")).getImage();
 		leftPanel=new BackgroundPanel(leftImage);
@@ -127,7 +137,7 @@ public class DealerPage extends JFrame{
 		leftPanel.setLayout(null);
 	}
 
-	public void Right(){
+	public void designRight(){
 		//Panel
 		Image rightImage= new ImageIcon(("src/com.neuSpring18/ui/CustomerUI/image/leftRight.jpg")).getImage();
 		rightPanel=new BackgroundPanel(rightImage);
@@ -136,7 +146,7 @@ public class DealerPage extends JFrame{
 		rightPanel.setLayout(null);
 	}
 
-	public void Button(){
+	public void designButtom(){
 		Image buttonImage=new ImageIcon(("src/com.neuSpring18/ui/CustomerUI/image/topDown.jpeg")).getImage();
 		buttonPanel=new BackgroundPanel(buttonImage);
 		buttonPanel.setBounds(6, 242, 438, 30);
@@ -147,7 +157,7 @@ public class DealerPage extends JFrame{
 		feedback.setBounds(6, 6, 117, 29);
 		buttonPanel.add(feedback);
 	}
-	public class event implements ActionListener{
+	public class toConfirm implements ActionListener{
 
 		public void actionPerformed(ActionEvent e){
 			dispose();
@@ -156,7 +166,7 @@ public class DealerPage extends JFrame{
 	}
 
 	public void jumpPage(){
-		event e = new event();//互相调用
+		toConfirm e = new toConfirm();//互相调用
 		confirmButton.addActionListener(e);
 	}
 
@@ -199,15 +209,7 @@ public class DealerPage extends JFrame{
 
 	public static void main(String args[]) {
 		new DealerPage();
-//		gui.setLocation();
-//		gui.content();
-//		gui.combox();
-//		gui.setFont();
-//		gui.add();
-//		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		gui.setVisible(true);
-//		gui.pack();
-//		gui.setTitle("Dealer Choice Page");
+
 	}
 
 }
