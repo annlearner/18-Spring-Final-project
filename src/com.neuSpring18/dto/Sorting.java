@@ -17,11 +17,11 @@ public enum Sorting {
 //    }
 //    which is extremely elegant!!!
 
+    DEFAULT(Comparator.comparing(Vehicle::getId)),
     ASCEND_PRICE(Comparator.comparingDouble(Vehicle::getPrice)),
     DESCEND_PRICE(Comparator.comparingDouble(Vehicle::getPrice).reversed()),
     ASCEND_YEAR(Comparator.comparingInt(Vehicle::getYear)),
-    DESCEND_YEAR(Comparator.comparingInt(Vehicle::getYear).reversed()),
-    DEFAULT(Comparator.comparing(Vehicle::getId));
+    DESCEND_YEAR(Comparator.comparingInt(Vehicle::getYear).reversed());
 
     private final Comparator<Vehicle> sorter;
 
