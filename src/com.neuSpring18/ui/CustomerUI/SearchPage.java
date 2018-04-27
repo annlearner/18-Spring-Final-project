@@ -30,7 +30,7 @@ public class SearchPage {
     private JButton backButton;
     private JLabel lblEmail;
     private JLabel lblDealerID;
-    private JTextField dealerIdTF;
+    private JLabel lbldealerId;
     private JPanel searchPanel;
     private JButton searchButton;
     private JTextField searchTF;
@@ -108,13 +108,12 @@ public class SearchPage {
             }
         });
         lblDealerID = new JLabel("Dealer:");
-        dealerIdTF = new JTextField();
-        dealerIdTF.setText(dealerID);
-        dealerIdTF.setColumns(10);
+        lbldealerId = new JLabel();
+        lbldealerId.setText(dealerID);
     }
 
     private void createSearchPanel() {
-        Image searchImage = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/searchBackGround.jpg").getImage();
+        Image searchImage = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/car1.jpg").getImage();
         searchPanel = new BackgroundPanel(searchImage);
         searchButton = new JButton("Search");
         searchTF = new JTextField();
@@ -122,7 +121,7 @@ public class SearchPage {
     }
 
     private void createFilterPanel() {
-        Image filterImage = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/filterBackGround.jpg").getImage();
+        Image filterImage = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/car2.jpg").getImage();
         filterPanel = new BackgroundPanel(filterImage);
         lblBrand = new JLabel("Brand:");
         vehicles = findVehicleOfDealer(dealerID);
@@ -170,7 +169,7 @@ public class SearchPage {
     }
 
     private void createSortPanel() {
-        Image SortBgImage = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/sortBackGround.jpg").getImage();
+        Image SortBgImage = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/car3.jpg").getImage();
         sortPanel = new BackgroundPanel(SortBgImage);
         ascendYear = new JRadioButton("Older first");
         descendYear = new JRadioButton("Newest first");
@@ -203,7 +202,7 @@ public class SearchPage {
         dealerPanel.add(backButton);
         dealerPanel.add(lblEmail);
         dealerPanel.add(lblDealerID);
-        dealerPanel.add(dealerIdTF);
+        dealerPanel.add(lbldealerId);
     }
 
     private void addSearchPanel() {
@@ -235,7 +234,6 @@ public class SearchPage {
         sortPanel.add(ascendPrice);
         sortPanel.add(descendPrice);
         sortButtonGroup = new ButtonGroup();
-
         sortButtonGroup.add(ascendYear);
         sortButtonGroup.add(descendYear);
         sortButtonGroup.add(ascendPrice);
@@ -260,7 +258,7 @@ public class SearchPage {
         backButton.setBounds(152, 6, 93, 16);
         lblEmail.setBounds(700, 6, 93, 16);
         lblDealerID.setBounds(390, 6, 50, 16);
-        dealerIdTF.setBounds(444, 1, 230, 26);
+        lbldealerId.setBounds(444, 1, 230, 26);
     }
 
     private void searchSetBound() {
@@ -281,16 +279,16 @@ public class SearchPage {
         lblYear.setBounds(408, 48, 45, 16);
         cbYearMin.setBounds(465, 46, 90, 22);
         cbYearMax.setBounds(565, 46, 90, 22);
-        btnSearch.setBounds(690, 43, 117, 29);
-        btnClear.setBounds(690, 83, 117, 29);
+        btnSearch.setBounds(300, 83, 117, 29);
+        btnClear.setBounds(500, 83, 117, 29);
     }
 
     private void sortSetBound() {
         sortPanel.setBounds(18, 215, 862, 52);
-        ascendYear.setBounds(31, 16, 150, 16);
-        descendYear.setBounds(231, 16, 150, 16);
-        ascendPrice.setBounds(431, 16, 150, 16);
-        descendPrice.setBounds(631, 16, 150, 16);
+        ascendYear.setBounds(31, 16, 200, 16);
+        descendYear.setBounds(231, 16, 200, 16);
+        ascendPrice.setBounds(431, 16, 200, 16);
+        descendPrice.setBounds(631, 16, 200, 16);
     }
 
     private void resultSetBound() {
@@ -300,7 +298,7 @@ public class SearchPage {
 
 
     private void setBackground() {
-        dealerPanel.setBackground(new Color(0, 191, 255));
+        dealerPanel.setBackground(Color.lightGray);
     }
 
     private void setLayout() {
@@ -387,39 +385,9 @@ public class SearchPage {
         vehiclesAfterFilter.getColumn("Detailed Description").setCellEditor(new ButtonEditor(new JTextField()));
     }
 
-//    public Object[][] getVehicleRow() {
-//        vehicles = getVehicleByFilter();
-//        vehicleRow = new Object[vehicles.size()][9];
-//        BufferedImage img;
-//        Image icon = null;
-//        for (int i = 0; i < vehicles.size(); i++) {
-//            Vehicle vehicle = vehicles.get(i);
-//            try {
-//                img = ImageIO.read(vehicle.getPhotoUrl());
-//                icon = img.getScaledInstance(85, 85, Image.SCALE_DEFAULT);
-//                vehicleRow[i][0]=new ImageIcon(icon);
-//            } catch (IOException e) {
-//                vehicleRow[i][0] = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/searchBackGround.jpg");
-//                urlForButton = null;
-//            }
-//            if(icon != null){
-//                urlForButton = vehicle.getPhotoUrl().toString();
-//            }
-//            vehicleRow[i][1] = vehicle.getCategory();
-//            vehicleRow[i][2] = vehicle.getYear();
-//            vehicleRow[i][3] = vehicle.getMake();
-//            vehicleRow[i][4] = vehicle.getModel();
-//            vehicleRow[i][5] = vehicle.getBodyType();
-//            vehicleRow[i][6] = vehicle.getPrice();
-//            vehicleRow[i][7] = vehicle.getPhotoUrl();
-//        }
-//        return vehicleRow;
-//    }
-
     public Object[][] getVehicleRow() {
 
         vehicles = getVehicleByFilter();
-
         vehicleRow = new Object[vehicles.size()][9];
         BufferedImage img = null;
         Image icon = null;
@@ -436,8 +404,6 @@ public class SearchPage {
             if(icon != null){
                 urlForButton = vehicle.getPhotoUrl().toString();
             }
-
-
             vehicleRow[i][1] = vehicle.getCategory();
             vehicleRow[i][2] = vehicle.getYear();
             vehicleRow[i][3] = vehicle.getMake();
@@ -445,7 +411,6 @@ public class SearchPage {
             vehicleRow[i][5] = vehicle.getBodyType();
             vehicleRow[i][6] = vehicle.getPrice();
             vehicleRow[i][7] = vehicle.getPhotoUrl();
-
         }
         return vehicleRow;
     }
