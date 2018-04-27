@@ -32,7 +32,7 @@ public class SearchPage {
     private JLabel lblDealerID;
     private JLabel lbldealerId;
     private JPanel searchPanel;
-    private JButton searchButton;
+    private JButton goButton;
     private JTextField searchTF;
     private JPanel filterPanel;
     private JLabel lblBrand;
@@ -115,7 +115,7 @@ public class SearchPage {
     private void createSearchPanel() {
         Image searchImage = new ImageIcon("src/com.neuSpring18/ui/CustomerUI/image/car1.jpg").getImage();
         searchPanel = new BackgroundPanel(searchImage);
-        searchButton = new JButton("Search");
+        goButton = new JButton("Go");
         searchTF = new JTextField();
         searchTF.setColumns(10);
     }
@@ -207,7 +207,7 @@ public class SearchPage {
 
     private void addSearchPanel() {
         frame.getContentPane().add(searchPanel);
-        searchPanel.add(searchButton);
+        searchPanel.add(goButton);
         searchPanel.add(searchTF);
     }
 
@@ -263,7 +263,7 @@ public class SearchPage {
 
     private void searchSetBound() {
         searchPanel.setBounds(18, 41, 862, 48);
-        searchButton.setBounds(475, 6, 123, 36);
+        goButton.setBounds(475, 6, 123, 36);
         searchTF.setBounds(238, 11, 189, 26);
     }
 
@@ -511,7 +511,7 @@ public class SearchPage {
         ascendPrice.addActionListener(operatorListener);
         descendYear.addActionListener(operatorListener);
         descendPrice.addActionListener(operatorListener);
-        searchButton.addActionListener(operatorListener);
+        goButton.addActionListener(operatorListener);
         previousPage.addActionListener(operatorListener);
         nextPage.addActionListener(operatorListener);
         turnPage.addActionListener(operatorListener);
@@ -532,7 +532,7 @@ public class SearchPage {
         @Override
         public void actionPerformed(ActionEvent ae) {
             Object o = ae.getSource();
-            if (o == searchButton) {
+            if (o == goButton) {
                 if (searchTF.getText() != null || searchTF.getText() != "") {
                     f.setSearch(searchTF.getText());
                     p.setPageNum(1);
