@@ -288,15 +288,8 @@ public class DealerMainFrame extends DealerCommonFrame{
                 setPageNum(input == null || input.isEmpty() ? 1 : Integer.parseInt(input));
                 refreshResult(c, getPageNum());
             }
-            if (source==addButton){
-                try {
-                    new DealerEdit(dealerName);
-
-                }catch (IOException ie){
-                    ie.printStackTrace();
-                }catch (InterruptedException ite){
-                    ite.printStackTrace();
-                }
+            if (source==addButton) {
+                new DealerEdit(dealerName);
 
             }
 

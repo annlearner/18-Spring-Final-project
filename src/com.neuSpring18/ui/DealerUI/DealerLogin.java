@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class DealerLogin extends DealerCommonFrame {
 
-    public BackgroundPanel backgroundPanel;
+    private BackgroundPanel backgroundPanel;
     private DealerManagerImple dmi = new DealerManagerImple();
 
 
@@ -23,7 +23,7 @@ public class DealerLogin extends DealerCommonFrame {
         makeItVisible();
     }
 
-    public void addBackgroundPanel() {
+    private void addBackgroundPanel() {
 
         try {
             BufferedImage backgroundImage = ImageIO.read(new URL("https://www.ilovegermanstyle.net/uploads/files/car-ferrari-aston-martin-ariel-atom-300-porsche-lamborghini.jpg"));
@@ -46,8 +46,6 @@ public class DealerLogin extends DealerCommonFrame {
         new DealerLogin();
     }
 
-
-
     class BackgroundPanel extends JPanel{
 
         private BufferedImage backgroundImage;
@@ -66,7 +64,7 @@ public class DealerLogin extends DealerCommonFrame {
         }
 
 
-        public void addLoginPanel(){
+        private void addLoginPanel(){
 
             welcome =new JLabel("Welcome");
             welcome.setFont(new Font("Times New Roman",Font.BOLD,45));
@@ -101,13 +99,13 @@ public class DealerLogin extends DealerCommonFrame {
         }
 
 
-        public void createListeners(){
+        private void createListeners(){
 
             loginPageButtonListener = new ButtonListener();
 
         }
 
-        public void addListeners(){
+        private void addListeners(){
 
             btn_login.addActionListener(loginPageButtonListener);
             btn_exit.addActionListener(loginPageButtonListener);
@@ -142,7 +140,7 @@ public class DealerLogin extends DealerCommonFrame {
         }
 
 
-        public void createComponents(){
+        private void createComponents(){
             user_no = new JLabel("Username : ");
             user_no.setFont(new Font("Times New Roman",Font.PLAIN,30));
             passwordLb = new JLabel("Password : ");
